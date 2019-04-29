@@ -76,7 +76,7 @@ legend("topleft",
   cex = 1.2,
   text.col = "black")
 
-# Calculate the area under the curve (auc) for each animal (oralGTT and insulinTT)
+# Calculate the area under the curve(auc) for each animal(oralGTT and insulinTT)
 library(DescTools)
 oralGTT <- phenotypes[, c("GTT_0",	"GTT_15",	"GTT_30",	"GTT_60",	"GTT_120")]
 insulinTT <- phenotypes[, c("ITT_0",	"ITT_15",	"ITT_30",	"ITT_60")]
