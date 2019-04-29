@@ -22,7 +22,7 @@ genotypes <- genotypes[rownames(annotation), rownames(phenotypes)]
 
 pmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
 shapmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
-for (pname in 1:length(phenonames)) {
+for (pname in phenonames) {
   pvalues <- apply(genotypes, 1, function(geno, pheno, sex) {
     mmodel <- lm(pheno ~ geno)
     shaptest <- shapiro.test(mmodel$residuals)
