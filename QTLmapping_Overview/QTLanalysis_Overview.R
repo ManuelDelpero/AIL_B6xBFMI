@@ -1,7 +1,7 @@
 setwd("D:/Edrive/Mouse/AIL_Manuel")
 
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
-phenotypes <- read.csv("phenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
+phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
 markerannot <- markerannot[,-1]
 markerannot <- markerannot[rownames(genotypes),]
