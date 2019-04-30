@@ -1,4 +1,4 @@
-setwd("D:/Edrive/Mouse/AIL_Manuel")
+setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
 rawgeno <- read.csv("RawGenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses=c(rep("character",4), rep("numeric",7)), na.strings=c("-", "NaN", ""))
 markernames <- unique(rawgeno[,"SNP Name"])
@@ -41,6 +41,16 @@ good <- which(unlist(lapply(apply(genotypes,1,table), function(x){
   length(which(x > 10)) >= 2
 })))
 genotypes <- genotypes[good, ]
+dim(genotypes)
+
+# Prevent small groups, set the groups with < 10 individuals to NA
+mtab <- apply(genotypes,1,table)
+for(x in 1:nrow(genotypes)){
+  if(any(mtab[[x]] < 10)){
+    gt <- names(mtab[[x]])[which(mtab[[x]] < 10)]
+    genotypes[x, genotypes[x, ] == gt] <- NA
+  }
+}
 dim(genotypes)
 
 # No duplicated markers, keep the first one we see
