@@ -57,6 +57,4 @@ dim(genotypes)
 genotypes <- genotypes[-which(duplicated(genotypes)),]
 dim(genotypes)
 
-# From the botswana goat analysis get the code to set genotype groups with < 10 individuals to NA
-
 write.table(genotypes, "genomatrix.clean.txt", sep = "\t", quote=FALSE)
