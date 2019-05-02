@@ -46,8 +46,8 @@ dim(genotypes)
 # Prevent small groups, set the groups with < 10 individuals to NA
 mtab <- apply(genotypes,1,table)
 for(x in 1:nrow(genotypes)){
-  if(any(mtab[[x]] < 10)){
-    gt <- names(mtab[[x]])[which(mtab[[x]] < 10)]
+  if(any(mtab[[x]] < 6)){
+    gt <- names(mtab[[x]])[which(mtab[[x]] < 6)]
     genotypes[x, genotypes[x, ] == gt] <- NA
   }
 }
@@ -58,3 +58,16 @@ genotypes <- genotypes[-which(duplicated(genotypes)),]
 dim(genotypes)
 
 write.table(genotypes, "genomatrix.clean.txt", sep = "\t", quote=FALSE)
+
+# Conver genotypes to numerical values to map using an additive model
+numgeno <- matrix(NA, nrow(genotypes), ncol(genotypes), dimnames=list(rownames(genotypes), colnames(genotypes)))
+for(x in 1:nrow(genotypes)){
+  alleles <- na.omit(unique(unlist(strsplit(genotypes[x,], ""))))
+  h1 <- paste0(alleles[1], alleles[1])
+  het <- c(paste0(alleles[1], alleles[2]), paste0(alleles[2], alleles[1]))
+  h2 <- paste0(alleles[2], alleles[2])
+  numgeno[x, which(genotypes[x, ] == h1)] <- -1
+  numgeno[x, which(genotypes[x, ] %in% het)] <- 0
+  numgeno[x, which(genotypes[x, ] == h2)] <- 1
+}
+write.table(numgeno, "genomatrix.clean_numeric.txt", sep = "\t", quote=FALSE)
