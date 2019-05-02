@@ -1,6 +1,7 @@
-setwd("D:/Edrive/Mouse/AIL_Manuel")
+setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
-genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+#genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+genotypes <- read.csv("genomatrix.clean_numeric.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
 markerannot <- markerannot[,-1]
@@ -14,7 +15,7 @@ for(chr in chromosomes){
   annotation <- rbind(annotation, markerannot[markerannot[,"Chromosome"] == chr,])
 }
 
-phenonames <- colnames(phenotypes)[-c(1:3)]
+phenonames <- colnames(phenotypes)[-c(1:6)]
 
 # Make sure that the ordering between phenotypes and genotypes matches !!!!!
 # Also sort the markers by their natural chromosome ordering
@@ -24,7 +25,7 @@ pmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownam
 shapmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
 for (pname in phenonames) {
   pvalues <- apply(genotypes, 1, function(geno, pheno, sex) {
-    mmodel <- lm(pheno ~ geno)
+    mmodel <- lm(pheno ~ geno+sex)
     shaptest <- shapiro.test(mmodel$residuals)
     return(c(anova(mmodel)[[5]][1], shaptest$p.value))
   }, pheno = phenotypes[,pname], sex = phenotypes[,"Sex"])
@@ -46,3 +47,12 @@ signmatrix <- lodmatrix[which(apply(lodmatrix, 1, function(x){ any(x > -log10(0.
 signannotmatrix <- cbind(annotation[rownames(signmatrix), ], signmatrix)
 
 write.table(signannotmatrix, "signannotmatrix.txt", sep = "\t", quote=FALSE)
+
+# Analysis on the Top markers
+#read the normal genotypes (non numeric)
+genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+#ITT TOP marker
+topmarker <- t(genotypes["gUNCHS024558",])
+genophenoITT <- cbind(topmarker, phenotypes[,"aucs.adjITT"])
+colnames(genophenoITT) <- c("Genotype", "ITT")
+boxplot(as.numeric(as.character(genophenoITT[, "ITT"]))  ~ genophenoITT[,"Genotype"])
