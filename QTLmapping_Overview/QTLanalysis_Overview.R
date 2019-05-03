@@ -64,7 +64,7 @@ genophenoWeight <- cbind(topmarker, phenotypes[,"d98"])
 colnames(genophenoWeight) <- c("Genotype", "d98")
 boxplot(as.numeric(as.character(genophenoWeight[, "d98"]))  ~ genophenoWeight[,"Genotype"],  main = "Body weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen" , "lightblue")))
 
-#Quadriceps weight TOP marker
+# Quadriceps weight TOP marker
 topmarker <- t(genotypes["SAH033394051",])
 genophenoQuadri <- cbind(topmarker, phenotypes[,"Quadri"])
 colnames(genophenoQuadri) <- c("Genotype", "Quadri")
