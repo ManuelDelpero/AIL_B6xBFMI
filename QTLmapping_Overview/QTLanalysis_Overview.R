@@ -49,10 +49,23 @@ signannotmatrix <- cbind(annotation[rownames(signmatrix), ], signmatrix)
 write.table(signannotmatrix, "signannotmatrix.txt", sep = "\t", quote=FALSE)
 
 # Analysis on the Top markers
-#read the normal genotypes (non numeric)
+# read the normal genotypes (non numeric)
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
-#ITT TOP marker
+
+# ITT TOP marker
 topmarker <- t(genotypes["gUNCHS024558",])
 genophenoITT <- cbind(topmarker, phenotypes[,"aucs.adjITT"])
 colnames(genophenoITT) <- c("Genotype", "ITT")
-boxplot(as.numeric(as.character(genophenoITT[, "ITT"]))  ~ genophenoITT[,"Genotype"])
+boxplot(as.numeric(as.character(genophenoITT[, "ITT"]))  ~ genophenoITT[,"Genotype"], main = "ITT" , xlab = "Genotype", ylab = "AUC (adj)", col = (c("gold" , "darkgreen" , "lightblue")))
+
+# Body weight TOP marker
+topmarker <- t(genotypes["gUNC5046545",])
+genophenoWeight <- cbind(topmarker, phenotypes[,"d98"])
+colnames(genophenoWeight) <- c("Genotype", "d98")
+boxplot(as.numeric(as.character(genophenoWeight[, "d98"]))  ~ genophenoWeight[,"Genotype"],  main = "Body weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen" , "lightblue")))
+
+#Quadriceps weight TOP marker
+topmarker <- t(genotypes["SAH033394051",])
+genophenoQuadri <- cbind(topmarker, phenotypes[,"Quadri"])
+colnames(genophenoQuadri) <- c("Genotype", "Quadri")
+boxplot(as.numeric(as.character(genophenoQuadri[, "Quadri"]))  ~ genophenoQuadri[,"Genotype"],  main = "Quadriceps weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen")))
