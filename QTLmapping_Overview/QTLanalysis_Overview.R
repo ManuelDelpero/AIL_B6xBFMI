@@ -15,7 +15,7 @@ for(chr in chromosomes){
   annotation <- rbind(annotation, markerannot[markerannot[,"Chromosome"] == chr,])
 }
 
-phenonames <- colnames(phenotypes)[-c(1:6)]
+phenonames <- colnames(phenotypes)[-c(1:5)]
 
 # Make sure that the ordering between phenotypes and genotypes matches !!!!!
 # Also sort the markers by their natural chromosome ordering
@@ -37,11 +37,18 @@ lodmatrix <- -log10(pmatrix)
 
 write.table(lodmatrix, "lodmatrix.txt", sep = "\t", quote=FALSE)
 
+#Manhattan plots
 for (pname in phenonames) {
   plot(lodmatrix[,pname], main = pname, col = as.numeric(as.factor(annotation[,"Chromosome"])))
   abline(h = -log10(0.05 / nrow(lodmatrix)), col="orange")
   abline(h = -log10(0.01 / nrow(lodmatrix)), col="green")
 }
+
+#QQplots
+for (pname in phenonames[1])
+ pvals.exp <- (rank(lodmatrix[,pname], ties.method="first")+0.5) / (length(lodmatrix[,pname]) + 1)
+ plot(-log10(pvals.exp), -log10(lodmatrix[,pname]))
+ abline(a=0, b=1)
 
 signmatrix <- lodmatrix[which(apply(lodmatrix, 1, function(x){ any(x > -log10(0.01 / nrow(lodmatrix))) })),]
 signannotmatrix <- cbind(annotation[rownames(signmatrix), ], signmatrix)
@@ -54,7 +61,7 @@ genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE
 
 # ITT TOP marker
 topmarker <- t(genotypes["gUNCHS024558",])
-genophenoITT <- cbind(topmarker, phenotypes[,"aucs.adjITT"])
+genophenoITT <- cbind(topmarker, phenotypes[,"ITT_0"])
 colnames(genophenoITT) <- c("Genotype", "ITT")
 boxplot(as.numeric(as.character(genophenoITT[, "ITT"]))  ~ genophenoITT[,"Genotype"], main = "ITT" , xlab = "Genotype", ylab = "AUC (adj)", col = (c("gold" , "darkgreen" , "lightblue")))
 
