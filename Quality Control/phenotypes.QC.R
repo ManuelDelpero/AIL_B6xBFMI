@@ -1,4 +1,4 @@
-setwd("D:/Edrive/Mouse/AIL_Manuel")
+setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
 phenotypes <- read.csv("phenotypes.txt", header=TRUE, check.names=FALSE, sep="\t", row.names = 1)
 measurementdays.char <- paste0("d", seq(21, 140, 7))
@@ -113,5 +113,9 @@ for(x in 1:nrow(oralGTTaucs.adj)){
 }
 
 #adding new values to the pheno matrix
-allPhenotypes <- cbind(phenotypes, aucs.adjGTT, aucs.adjITT)
+allPhenotypes <- cbind(phenotypes, "GTTauc" = aucs.adjGTT, "ITTauc" = aucs.adjITT)
+
+# Compute and add the BMI for the mice using the last measurement day (Day 140)
+
+
 write.table(allPhenotypes, "allPhenotypes.txt", sep = "\t", quote=FALSE)
