@@ -24,11 +24,11 @@ genotypes <- genotypes[rownames(annotation), rownames(phenotypes)]
 pmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
 shapmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
 for (pname in phenonames) {
-  pvalues <- apply(genotypes, 1, function(geno, pheno, sex) {
-    mmodel <- lm(pheno ~ geno+sex)
+  pvalues <- apply(genotypes, 1, function(geno, pheno, sex, wg) {
+    mmodel <- lm(pheno ~ sex + geno + wg)
     shaptest <- shapiro.test(mmodel$residuals)
-    return(c(anova(mmodel)[[5]][1], shaptest$p.value))
-  }, pheno = phenotypes[,pname], sex = phenotypes[,"Sex"])
+    return(c(anova(mmodel)["Pr(>F)"]["geno",], shaptest$p.value))
+  }, pheno = phenotypes[,pname], sex = phenotypes[,"Sex"], wg = phenotypes[,"WG"])
   pmatrix[colnames(pvalues), pname] <- pvalues[1,]
   shapmatrix[colnames(pvalues), pname] <- pvalues[2,]
   cat("Done: ", pname, "\n")
@@ -45,7 +45,7 @@ for (pname in phenonames) {
 }
 
 #QQplots
-for (pname in phenonames[1])
+for (pname in phenonames)
  pvals.exp <- (rank(lodmatrix[,pname], ties.method="first")+0.5) / (length(lodmatrix[,pname]) + 1)
  plot(-log10(pvals.exp), -log10(lodmatrix[,pname]))
  abline(a=0, b=1)
