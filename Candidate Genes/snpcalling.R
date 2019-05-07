@@ -20,8 +20,11 @@ callSNPs <- function(bamfiles, chr = 1, startpos = 1, endpos = 2, outname = "myS
   cmd1 <- paste0(bcftools, " mpileup -q 30 -Ou -r ", region, " -f ", reference, " ", bamstr)
   cmd2 <- paste0(bcftools, " call -mv -Ov ")
   cmd3 <- paste0(bcftools, " view -v snps -i '%QUAL>=20 && DP>10' - -o ", outname, ".snps-filtered.vcf")
-  execute(paste0(cmd1, " | ", cmd2, " | ", cmd3), FALSE, FALSE)
+  execute(paste0(cmd1, " | ", cmd2, " | ", cmd3))
   invisible("")
 }
 
-#callSNPs(c("merged_chr19.bam"), 19, 1000000, 4000000)
+callSNPs(c("/halde/BFMI_Alignment_Mar19/merged_chr19.bam", #860-S12 high coverage
+           "/home/sandra/NAS/DNA/Sequencing/DifeMouse/RAW/BAM/ext_L7256.bam", # 861-S1 (Needs realignment)
+           "/home/sandra/NAS/DNA/Sequencing/DifeMouse/RAW/BAM/ext_L7257.bam" # 861-S2 (Needs realignment)
+           ), 19, 3000000, 3500000, "test")
