@@ -1,4 +1,4 @@
-setwd("C:/Users/User/Desktop/AIL_B6xBFMI/RAWDATA")
+setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
 #genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 genotypes <- read.csv("genomatrix.clean_numeric.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
@@ -20,37 +20,51 @@ phenonames <- colnames(phenotypes)[-c(1:5)]
 # Make sure that the ordering between phenotypes and genotypes matches !!!!!
 # Also sort the markers by their natural chromosome ordering
 genotypes <- genotypes[rownames(annotation), rownames(phenotypes)]
+write.table(genotypes, "OrderedGenotypes.txt", sep = "\t", quote=FALSE)
+
+# Covariates we could/need to include in the model, we test them on their pvalue
+sex <- phenotypes[, "Sex"]
+wg <- phenotypes[, "WG"]
+mother <- phenotypes[, "Mutter"]
 
 pmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
-shapmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
-for (pname in phenonames) {
-  pvalues <- apply(genotypes, 1, function(geno, pheno, sex, wg) {
-    mmodel <- lm(pheno ~ sex + geno + wg)
-    shaptest <- shapiro.test(mmodel$residuals)
-    return(c(anova(mmodel)["Pr(>F)"]["geno",], shaptest$p.value))
-  }, pheno = phenotypes[,pname], sex = phenotypes[,"Sex"], wg = phenotypes[,"WG"])
-  pmatrix[colnames(pvalues), pname] <- pvalues[1,]
-  shapmatrix[colnames(pvalues), pname] <- pvalues[2,]
-  cat("Done: ", pname, "\n")
+for (pname in phenonames){
+  pheno <- phenotypes[, pname]
+  p.sex <- anova(lm(pheno ~ sex))["Pr(>F)"]["sex",]
+  p.mother <- anova(lm(pheno ~ mother))["Pr(>F)"]["mother",]
+  p.wg <- anova(lm(pheno ~ wg))["Pr(>F)"]["wg",]
+  myfactors <- c()
+  if(p.sex < 0.05) myfactors <- c(myfactors, "sex")
+  if(p.mother < 0.05) myfactors <- c(myfactors, "mother")
+  if(p.wg < 0.05) myfactors <- c(myfactors, "wg")
+  myformula <- paste0("pheno ~ ", paste(c(myfactors, "geno"), collapse = " + "))
+  cat(pname, " ", myformula, "\n")
+  
+  pvalues <- apply(genotypes, 1, function(geno, pheno, sex, wg, mother, myformula) {
+    mmodel <- lm(formula(myformula))
+    return(anova(mmodel)["Pr(>F)"]["geno",])
+  }, pheno = phenotypes[,pname], sex = sex, wg = wg, mother = mother, myformula = myformula)
+  pmatrix[names(pvalues), pname] <- pvalues
 }
 lodmatrix <- -log10(pmatrix)
 
 write.table(lodmatrix, "lodmatrix.txt", sep = "\t", quote=FALSE)
 
 #Manhattan plots
-for (pname in phenonames) {
+for (pname in  "d70"){   #phenonames) {
   plot(lodmatrix[,pname], main = pname, col = as.numeric(as.factor(annotation[,"Chromosome"])))
   abline(h = -log10(0.05 / nrow(lodmatrix)), col="orange")
   abline(h = -log10(0.01 / nrow(lodmatrix)), col="green")
 }
 
 #QQplots
-for (pname in phenonames)
- pvals.exp <- (rank(lodmatrix[,pname], ties.method="first")+0.5) / (length(lodmatrix[,pname]) + 1)
- plot(-log10(pvals.exp), -log10(lodmatrix[,pname]))
- abline(a=0, b=1)
+for (pname in "d70"){   #phenonames) {
+  pvals.exp <- (rank(pmatrix[,pname], ties.method="first")+0.5) / (length(pmatrix[,pname]) + 1)
+  plot(-log10(pvals.exp), -log10(pmatrix[,pname]))
+  abline(a=0, b=1)
+}
 
-signmatrix <- lodmatrix[which(apply(lodmatrix, 1, function(x){ any(x > -log10(0.01 / nrow(lodmatrix))) })),]
+signmatrix <- lodmatrix[which(apply(lodmatrix, 1, function(x){ any(x > -log10(0.05 / nrow(lodmatrix))) })),] #0.15 for building the regions
 signannotmatrix <- cbind(annotation[rownames(signmatrix), ], signmatrix)
 
 write.table(signannotmatrix, "signannotmatrix.txt", sep = "\t", quote=FALSE)
