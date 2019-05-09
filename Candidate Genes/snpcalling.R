@@ -24,7 +24,7 @@ callSNPs <- function(bamfiles, chr = 1, startpos = 1, endpos = 2, outname = "myS
   invisible("")
 }
 
-callSNPs(c("/halde/BFMI_Alignment_Mar19/merged_chr19.bam", #860-S12 high coverage
-           "/home/sandra/NAS/DNA/Sequencing/DifeMouse/RAW/BAM/ext_L7256.bam", # 861-S1 (Needs realignment)
-           "/home/sandra/NAS/DNA/Sequencing/DifeMouse/RAW/BAM/ext_L7257.bam" # 861-S2 (Needs realignment)
+callSNPs(c("/halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam",  # 860-S12  (high coverage)
+           "/halde/BFMI_Alignment_Mar19/merged_sorted_861-S1.bam",   # 861-S1 (medium coverage)
+           "/halde/BFMI_Alignment_Mar19/merged_sorted_861-S2.bam"    # 861-S2 (medium coverage)
            ), 19, 3000000, 3500000, "test")
