@@ -19,7 +19,7 @@ callSNPs <- function(bamfiles, chr = 1, startpos = 1, endpos = 2, outname = "myS
 
   cmd1 <- paste0(bcftools, " mpileup -q 30 -Ou -r ", region, " -f ", reference, " ", bamstr)
   cmd2 <- paste0(bcftools, " call -mv -Ov ")
-  cmd3 <- paste0(bcftools, " view -v snps -i '%QUAL>=20 && DP>10' - -o ", outname, ".snps-filtered.vcf")
+  cmd3 <- paste0(bcftools, " view -v snps -i '%QUAL>=30 && DP>10' - -o ", outname, ".snps-filtered.vcf")
   execute(paste0(cmd1, " | ", cmd2, " | ", cmd3))
   invisible("")
 }
