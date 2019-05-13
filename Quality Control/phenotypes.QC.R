@@ -116,6 +116,9 @@ for(x in 1:nrow(oralGTTaucs.adj)){
 allPhenotypes <- cbind(phenotypes, "GTTauc" = aucs.adjGTT, "ITTauc" = aucs.adjITT)
 
 # Compute and add the BMI for the mice using the last measurement day (Day 140)
-
+# Use Dubois equation to calculate body suface(m^2)
+BMI <- data.frame(allPhenotypes[, "d140"] / ((0.007184*((allPhenotypes[, "d140"]/1000)^0.425)*(allPhenotypes[, "Length"]^0.725))*1000))
+colnames(BMI) <- "BMI"
+allPhenotypes <- cbind(allPhenotypes, BMI)
 
 write.table(allPhenotypes, "allPhenotypes.txt", sep = "\t", quote=FALSE)
