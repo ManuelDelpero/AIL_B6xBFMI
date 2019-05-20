@@ -4,7 +4,6 @@
 # last modified May, 2019
 # first written May, 2019
 
-<<<<<<< HEAD
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 source("C:/Github/AIL_B6xBFMI/QTLmapping_Overview/peak.detect.R")
 
@@ -14,17 +13,6 @@ markerannot <- markerannot[rownames(genotypes),]
 
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 mprofiles <- read.table("lodmatrix.adj.txt", sep="\t", row.names=1, header=TRUE)
-=======
-setwd("D:/Ddrive/Collegues/Manuel/17_05_QTL")
-source("peak.detect.R")
-
-genotypes <- read.table("RAWDATA/OrderedGenotypes.txt", sep = "\t", check.names=FALSE)
-markerannot <- read.csv("RAWDATA/SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
-markerannot <- markerannot[rownames(genotypes),]
-
-phenotypes <- read.csv("RAWDATA/allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
-mprofiles <- read.table("lodmatrix.txt", sep="\t", row.names=1, header=TRUE)
->>>>>>> b6a395f0e8313f187314aa37e4a45009755e33e1
 
 results <- NULL
 for(x in 1:ncol(mprofiles)){
@@ -43,8 +31,4 @@ for(x in 1:ncol(mprofiles)){
 colnames(results) <- c("Phenotype", "Chr", "StartPos", "TopPos", "StopPos", "LOD", "flankLeft", "TopMarker", "FlankRight")
 results <- data.frame(results)
 
-<<<<<<< HEAD
 write.table(results, "QTL_regions.txt", row.names=FALSE, quote=FALSE, sep='\t')
-=======
-write.table(results, "QTL_regions.txt", row.names=FALSE, quote=FALSE, sep='\t')
->>>>>>> b6a395f0e8313f187314aa37e4a45009755e33e1

@@ -4,7 +4,7 @@
 # last modified May, 2019
 # first written May, 2019
 
-peak.detect <- function(profile, map, cutoff = 4.5, loddrop = 1.5){  
+peak.detect <- function(profile, map, cutoff = 4.5, loddrop = 1.5){
   peakstart <- c()
   peakend <- c()
   peaks <- c()
@@ -45,13 +45,3 @@ getMarkersWithinRange <- function(map, idx, dir, window = 5000000){
   withinrange <- which(map[,"Chromosome"] == curChr & map[,"Position"] %in% curPos:lookTo)
   return(withinrange)
 }
-<<<<<<< HEAD
-
-			
-
-
-
-
-
-=======
->>>>>>> b6a395f0e8313f187314aa37e4a45009755e33e1
