@@ -45,6 +45,7 @@ getMarkersWithinRange <- function(map, idx, dir, window = 5000000){
   withinrange <- which(map[,"Chromosome"] == curChr & map[,"Position"] %in% curPos:lookTo)
   return(withinrange)
 }
+<<<<<<< HEAD
 
 			
 
@@ -52,3 +53,5 @@ getMarkersWithinRange <- function(map, idx, dir, window = 5000000){
 
 
 
+=======
+>>>>>>> b6a395f0e8313f187314aa37e4a45009755e33e1
