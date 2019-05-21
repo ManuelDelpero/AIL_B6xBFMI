@@ -97,11 +97,11 @@ write.table(signannotmatrix.adj, "signannotmatrix.adj.txt", sep = "\t", quote=FA
 # read the normal genotypes (non numeric)
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 
-# ITT TOP marker
-topmarker <- t(genotypes["gUNCHS024558",])
-genophenoITT <- cbind(topmarker, phenotypes[,"ITT_0"])
-colnames(genophenoITT) <- c("Genotype", "ITT")
-boxplot(as.numeric(as.character(genophenoITT[, "ITT"]))  ~ genophenoITT[,"Genotype"], main = "ITT" , xlab = "Genotype", ylab = "AUC (adj)", col = (c("gold" , "darkgreen" , "lightblue")))
+# Triglycerides TOP marker
+topmarker <- t(genotypes["S1H083826428",])
+genophenoT <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
+colnames(genophenoT) <- c("Genotype", "Triglycerides/Proteins")
+boxplot(as.numeric(as.character(genophenoT[, "Triglycerides/Proteins"]))  ~ genophenoT[,"Genotype"], main = "Liver triglycerides", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = (c("gold" , "darkgreen" , "lightblue")))
 
 # Body weight TOP marker
 topmarker <- t(genotypes["gUNC5046545",])
