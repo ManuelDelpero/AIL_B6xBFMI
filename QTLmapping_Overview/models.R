@@ -17,7 +17,7 @@ Triglicerydes <- apply(genotypes,1,function(geno, pheno){
 }, pheno = phenotypes[,"Triglycerides/Proteins"])
 
 #Triglicerydes <- apply(genotypes,1,function(geno, pheno, phenocor1, phenocor2){
- #return(anova(lm(pheno ~ phenocor1 + phenocor2 + geno))[[5]][1])
+ #return(anova(lm(pheno ~ phenocor1 + phenocor2 + geno))[[5]][3])
 #}, pheno = phenotypes[,"Triglycerides/Proteins"], phenocor1 = phenotypes[,"WATsc"], phenocor2 = phenotypes[,"d140"])
 
 lodscores <- -log10(Triglicerydes)
