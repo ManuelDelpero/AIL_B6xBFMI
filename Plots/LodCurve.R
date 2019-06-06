@@ -20,9 +20,6 @@ for(chr in chromosomes){
 
 lodannotmatrix <- cbind(annotation[rownames(lodmatrix), ], lodmatrix)
 
-
-
-
 #Chr 3 bodyweight
 #Dataset, containing columns named: Chr, Pos, marPvalue
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "d63", "d70", "d98", "d140")]
@@ -42,8 +39,6 @@ plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(
      pt.cex = 2,
      cex = 1.2,
      text.col = "black")
-
-
 
 #Chr 8
 #Dataset, containing columns named: Chr, Pos, marPvalue
