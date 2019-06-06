@@ -1,5 +1,5 @@
 #load regions of Manuel, get the candidate genes and perform snp calling
-#can only run on the server 
+#can only run on the server
 
 #written by Sandra Dresen
 #first written May, 2019
@@ -29,13 +29,13 @@ for(x in 1:nrow(regions)){												#for loop number of rows in the region
 
 # figure out all the unique genes, result: matrix with 4 columns: name, chromosome, start position, end position
 uniquegenes <- NULL
-for(x in genes){ 
+for(x in genes){
   if(!is.null(x)){
     subset <- x[ ,c("ensembl_gene_id", "chromosome_name", "start_position", "end_position", "strand")]
-	uniquegenes <- rbind(uniquegenes, subset) 
+	uniquegenes <- rbind(uniquegenes, subset)
   }
 }
-uniquegenes <- uniquegenes[!duplicated(uniquegenes),] 
+uniquegenes <- uniquegenes[!duplicated(uniquegenes),]
 table(uniquegenes[ ,"chromosome_name"])
 
 bamfiles <- c("/halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam",  # 860-S12  (high coverage)
@@ -50,7 +50,7 @@ for(x in 1:nrow(uniquegenes)){
   }else{
     endpos <- endpos +500
   }
-  callSNPs(bamfiles, uniquegenes[x, 2], startpos, endpos, uniquegenes[x, 1]) 
+  callSNPs(bamfiles, uniquegenes[x, 2], startpos, endpos, uniquegenes[x, 1])
 }
 
 filelist <- list.files(".") #we removed all the .txt files
@@ -69,13 +69,3 @@ cat(paste0(header, collapse = "\n"), "\n", file = "all_combined.vcf")
 write.table(allSNPs[,-1], file = "all_combined.vcf", sep = "\t", quote=FALSE, append = TRUE, col.names=FALSE, row.names= FALSE)
 
 q("no")
-
-
-
-
-
-
-
-
-
-
