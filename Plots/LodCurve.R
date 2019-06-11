@@ -3,7 +3,7 @@
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
 #genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
-genotypes <- read.csv("genomatrix.clean_numeric.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
 lodmatrix <- read.csv("lodmatrix.adj.txt", header=TRUE, sep="\t", check.names=FALSE)
@@ -20,8 +20,8 @@ for(chr in chromosomes){
 
 lodannotmatrix <- cbind(annotation[rownames(lodmatrix), ], lodmatrix)
 
-#Chr 3 bodyweight
-#Dataset, containing columns named: Chr, Pos, marPvalue
+## Chr 3 bodyweight
+# Dataset, containing columns named: Chr, Pos, marPvalue
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "d63", "d70", "d98", "d140")]
 chr3 <- dataset[which(dataset[,"Chromosome"] == 3),]
 
@@ -40,6 +40,41 @@ plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(
      cex = 1.2,
      text.col = "black")
 
+# Day 63 with effect plot
+par(mfrow=c(2,2))
+plot(main = "Lod score curve Chr 3 (day 63)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "Lodscore", xlab = "Position")
+	points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
+
+topmarkerID <- rownames(dataset[which.max(dataset[,"d63"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"d63"])
+colnames(genopheno) <- c("Genotype", "d63")
+boxplot(as.numeric(as.character(genopheno[, "d63"]))  ~ genopheno[,"Genotype"], main = "d63 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = topo.colors(3), notch = TRUE)
+	legend("bottomright", 
+	legend = c(groupsSize[1], groupsSize[2], groupsSize[3]), 
+       col = topo.colors(3),
+       pch = c(19, 19), cex = 0.8, 
+       box.col = "darkgreen"
+       )
+	 
+# Day 98 with effect plot
+plot(main = "Lod score curve Chr 3 (day 98)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "Lodscore", xlab = "Position")
+	points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d98"] , type = "l", col="deepskyblue", lwd = 1)
+
+topmarkerID <- rownames(dataset[which.max(dataset[,"d98"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"d98"])
+colnames(genopheno) <- c("Genotype", "d98")
+boxplot(as.numeric(as.character(genopheno[, "d98"]))  ~ genopheno[,"Genotype"], main = "d98 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = topo.colors(3), notch = TRUE)
+	legend("bottomright", 
+	legend = c(groupsSize[1], groupsSize[2], groupsSize[3]), 
+       col = topo.colors(3),
+       pch = c(19, 19), cex = 0.8, 
+       box.col = "darkgreen"
+       )
+	 
 #Chr 8
 #Dataset, containing columns named: Chr, Pos, marPvalue
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins")]
