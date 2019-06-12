@@ -44,16 +44,18 @@ plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(
 par(mfrow=c(2,2))
 plot(main = "Lod score curve Chr 3 (day 63)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "Lodscore", xlab = "Position")
 	points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
+	abline(h=4.5, col="red")
 
 topmarkerID <- rownames(dataset[which.max(dataset[,"d63"]),])
 topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"d63"])
 colnames(genopheno) <- c("Genotype", "d63")
-boxplot(as.numeric(as.character(genopheno[, "d63"]))  ~ genopheno[,"Genotype"], main = "d63 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = topo.colors(3), notch = TRUE)
+bpt <- boxplot(as.numeric(as.character(genopheno[, "d63"]))  ~ genopheno[,"Genotype"], main = "d63 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = c("lightblue", "lightgreen", "pink"),  notch = TRUE)
+lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
 	legend("bottomright", 
 	legend = c(groupsSize[1], groupsSize[2], groupsSize[3]), 
-       col = topo.colors(3),
+       col = c("lightblue", "lightgreen", "pink"),
        pch = c(19, 19), cex = 0.8, 
        box.col = "darkgreen"
        )
@@ -61,16 +63,18 @@ boxplot(as.numeric(as.character(genopheno[, "d63"]))  ~ genopheno[,"Genotype"], 
 # Day 98 with effect plot
 plot(main = "Lod score curve Chr 3 (day 98)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "Lodscore", xlab = "Position")
 	points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d98"] , type = "l", col="deepskyblue", lwd = 1)
+	abline(h=4.5, col="red")
 
 topmarkerID <- rownames(dataset[which.max(dataset[,"d98"]),])
 topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"d98"])
 colnames(genopheno) <- c("Genotype", "d98")
-boxplot(as.numeric(as.character(genopheno[, "d98"]))  ~ genopheno[,"Genotype"], main = "d98 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = topo.colors(3), notch = TRUE)
+bpt <- boxplot(as.numeric(as.character(genopheno[, "d98"]))  ~ genopheno[,"Genotype"], main = "d98 Topmarker", xlab = "Genotype", ylab = "weight (gr.)", col = c("lightblue", "lightgreen", "pink"), notch = TRUE)
+lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
 	legend("bottomright", 
 	legend = c(groupsSize[1], groupsSize[2], groupsSize[3]), 
-       col = topo.colors(3),
+       col = c("lightblue", "lightgreen", "pink"),
        pch = c(19, 19), cex = 0.8, 
        box.col = "darkgreen"
        )
@@ -78,8 +82,22 @@ boxplot(as.numeric(as.character(genopheno[, "d98"]))  ~ genopheno[,"Genotype"], 
 #Chr 8
 #Dataset, containing columns named: Chr, Pos, marPvalue
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins")]
-chr3 <- dataset[which(dataset[,"Chromosome"] == 8),]
+chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
-plot(main = "Lod score curve Chr 8", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,7), ylab = "Lodscore", xlab = "Position")
-	points(x = as.numeric(chr3[,"Position"]), y = chr3[,"Triglycerides/Proteins"] , type = "l", col="orange", lwd = 3)
+plot(main = "Lod score curve Chr 8", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "Lodscore", xlab = "Position")
+	points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="deepskyblue", lwd = 1)
 	abline(h=4.5, col="red")
+	
+topmarkerID <- rownames(dataset[which.max(dataset[,"Triglycerides/Proteins"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
+colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
+bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  ~ genopheno[,"Genotype"], main = "Triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightblue", "lightgreen", "pink"), notch = TRUE)
+lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
+	legend("bottomright", 
+	legend = c(groupsSize[1], groupsSize[2], groupsSize[3]), 
+       col = c("lightblue", "lightgreen", "pink"),
+       pch = c(19, 19), cex = 0.8, 
+       box.col = "darkgreen"
+       )
