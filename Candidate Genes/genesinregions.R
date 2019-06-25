@@ -6,8 +6,12 @@
 #   install.packages("BiocManager")
 #   BiocManager::install("biomaRt")
 
+
+# example: genes <- getregion(bio.mart, 9, 107582143, 111667129) # biomart chr start end #äquivalent to the other example
+# example: genes <- getregion(bio.mart, regions[1, "chr"], regions[1, "start"], region[1, "end"]) # biomart chr start end
+# genes: get 120 genes
+
 library(biomaRt)
-"mmusculus_gene_ensembl"
 
 bio.mart <- useMart("ensembl", dataset="mmusculus_gene_ensembl")
 
@@ -25,4 +29,4 @@ getregion <- function(bio.mart, chr, startpos, endpos) {
   return (res.biomart) 
 }
 
-# test: getregion(bio.mart, 1, 10000000, 11000000) 
+# test: getregion(bio.mart, 1, 10000000, 11000000), chromosome 1, start_position and end_position 
