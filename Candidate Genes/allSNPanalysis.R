@@ -1,4 +1,6 @@
-setwd("D:/Ddrive/Collegues/Sandra")
+
+
+setwd("C:/Github/AIL_B6xBFMI/Candidate Genes")
 
 myvcf <- read.csv("all_combined.vcf", sep = "\t", skip = 169, header=FALSE, colClasses="character")
 dim(myvcf)
@@ -24,8 +26,8 @@ myvcf <- myvcf[which(!duplicated(myvcf[,"location"])),]
 myvep <- read.csv("vep_predictions_6_18_2019.txt", sep = "\t", skip = 1, header=FALSE, colClasses="character")
 colnames(myvep) <- c("Uploaded_variation", "Location", "Allele", "Consequence", "IMPACT", "SYMBOL", "Gene", "Feature_type", "Feature", "BIOTYPE", "EXON", "INTRON", "HGVSc", "HGVSp", "cDNA_position", "CDS_position", "Protein_position", "Amino_acids", "Codons", "Existing_variation", "DISTANCE", "STRAND", "FLAGS", "SYMBOL_SOURCE", "HGNC_ID", "TSL", "APPRIS", "REFSEQ_MATCH", "SIFT", "CLIN_SIG", "SOMATIC", "PHENO", "MOTIF_NAME", "MOTIF_POS", "HIGH_INF_POS", "MOTIF_SCORE_CHANGE")
 
-#bbs7mis <- unique(myvep[which(myvep[,"SYMBOL"] == "Bbs7" & myvep[, "Consequence"] == "missense_variant"),"Location"])
-#myvcf[which(myvcf[, "location"] %in% bbs7mis),]
+allgenes <- unique(myvep[which(myvep[,"SYMBOL"] == "allgenes" & myvep[, "Consequence"] == "missense_variant"),"Location"])
+myvcf[which(myvcf[, "location"] %in% allgenesmis),]
 
 # Keep only the VEP entries that are in the VCF file
 myvep <- myvep[which(myvep[, "Location"] %in% myvcf[, "location"]),]
@@ -56,5 +58,26 @@ for (gene in allgenes) {
   mrow <- mrow + 1
 }
 resM[which(resM[,"consequence"] == "++"),]
+
+
+
+
+
+for (gene in allgenes) {
+  snpingene <- vepgenes[which(vepgenes[,"Expression Level"] == gene),]
+  Expressioninoneofthe4regions <- any(unique(snpingene[,"Expression"]) == "brain", "liver", "skeleton", "hypothalamus")
+  if(Expressioninoneofthe4regions)
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 
