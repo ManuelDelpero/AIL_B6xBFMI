@@ -1,6 +1,5 @@
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
-
 #genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 genotypes <- read.csv("genomatrix.clean_numeric.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
@@ -90,8 +89,6 @@ write.table(lodmatrix.adj, "lodmatrix.adj.txt", sep = "\t", quote=FALSE)
 signmatrix.adj <- lodmatrix.adj[which(apply(lodmatrix.adj, 1, function(x){ any(x > -log10(0.05 / nrow(lodmatrix.adj))) })),]
 signannotmatrix.adj <- cbind(annotation[rownames(signmatrix.adj), ], signmatrix.adj)
 write.table(signannotmatrix.adj, "signannotmatrix.adj.txt", sep = "\t", quote=FALSE)
-
-
 
 # Analysis on the Top markers
 # read the normal genotypes (non numeric)
