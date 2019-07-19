@@ -12,7 +12,7 @@ regions <- read.table("QTL_regions52019.txt", sep = "\t", header = TRUE)
 
 setwd("/home/sandra/mastersprojectanalysis/allOverNight/")
 
-# create a forloop
+# Get genes in regions
 genes <- vector("list", nrow(regions))
 for(x in 1:nrow(regions)){																				#for loop number of rows in the region
   # check if the region is valid (not NA)
@@ -42,6 +42,7 @@ bamfiles <- c("/halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam",  # 860-S1
              "/halde/BFMI_Alignment_Mar19/merged_sorted_861-S1.bam",    # 861-S1 (medium coverage)
              "/halde/BFMI_Alignment_Mar19/merged_sorted_861-S2.bam")    # 861-S2 (medium coverage)
 
+# Snps in genes
 for(x in 1:nrow(uniquegenes)){ 
   startpos <- uniquegenes[x, 3]
   endpos <- uniquegenes[x, 4]
@@ -69,13 +70,3 @@ cat(paste0(header, collapse = "\n"), "\n", file = "all_combined.vcf")
 write.table(allSNPs[,-1], file = "all_combined.vcf", sep = "\t", quote=FALSE, append = TRUE, col.names=FALSE, row.names= FALSE)
 
 q("no")
-#comined the genes for liver triglygerides in a unique dataset
-
-
-
-
-
-
-
-
-
