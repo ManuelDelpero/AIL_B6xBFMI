@@ -67,6 +67,7 @@ for(file in filelist){
 
 header = readLines(filelist[1], n = 169)
 cat(paste0(header, collapse = "\n"), "\n", file = "all_combined.vcf")
+# File containing all SNPs in the genes
 write.table(allSNPs[,-1], file = "all_combined.vcf", sep = "\t", quote=FALSE, append = TRUE, col.names=FALSE, row.names= FALSE)
 
 q("no")
