@@ -1,6 +1,4 @@
-
-
-setwd("C:/Github/AIL_B6xBFMI/Candidate Genes")
+setwd("C:/Users/User/Desktop/AIL B6xBFMI/candidategenesdata")
 
 myvcf <- read.csv("all_combined.vcf", sep = "\t", skip = 169, header=FALSE, colClasses="character")
 dim(myvcf)
@@ -26,8 +24,8 @@ myvcf <- myvcf[which(!duplicated(myvcf[,"location"])),]
 myvep <- read.csv("vep_predictions_6_18_2019.txt", sep = "\t", skip = 1, header=FALSE, colClasses="character")
 colnames(myvep) <- c("Uploaded_variation", "Location", "Allele", "Consequence", "IMPACT", "SYMBOL", "Gene", "Feature_type", "Feature", "BIOTYPE", "EXON", "INTRON", "HGVSc", "HGVSp", "cDNA_position", "CDS_position", "Protein_position", "Amino_acids", "Codons", "Existing_variation", "DISTANCE", "STRAND", "FLAGS", "SYMBOL_SOURCE", "HGNC_ID", "TSL", "APPRIS", "REFSEQ_MATCH", "SIFT", "CLIN_SIG", "SOMATIC", "PHENO", "MOTIF_NAME", "MOTIF_POS", "HIGH_INF_POS", "MOTIF_SCORE_CHANGE")
 
-allgenes <- unique(myvep[which(myvep[,"SYMBOL"] == "allgenes" & myvep[, "Consequence"] == "missense_variant"),"Location"])
-myvcf[which(myvcf[, "location"] %in% allgenesmis),]
+allgenes <- unique(myvep[which(myvep[, "Consequence"] == "missense_variant"),"Location"])
+myvcf[which(myvcf[, "location"] %in% allgenes),]
 
 # Keep only the VEP entries that are in the VCF file
 myvep <- myvep[which(myvep[, "Location"] %in% myvcf[, "location"]),]
@@ -47,37 +45,73 @@ for (gene in allgenes) {
   resM[mrow, "chr"] <- chr
   hasMissense <- any(unique(snpingene[,"Consequence"]) == "missense_variant")
   if(hasMissense) {
-    resM[mrow, "missense"] <- "+"
-    if(length(grep("tolerated", snpingene[,"SIFT"])) > 0) resM[mrow, "consequence"] <- "-"
-    if(length(grep("tolerated_low_confidence", snpingene[,"SIFT"])) > 0) resM[mrow, "consequence"] <- "0"
-    if(length(grep("deleterious_low_confidence", snpingene[,"SIFT"])) > 0) resM[mrow, "consequence"] <- "+"
-    if(length(grep("deleterious", snpingene[,"SIFT"])) > 0) resM[mrow, "consequence"] <- "++"
+    resM[mrow, "missense variant"] <- "+"
+    if(length(grep("tolerated(", snpingene[,"SIFT"], fixed=TRUE)) > 0) resM[mrow, "consequence"] <- "-"
+    if(length(grep("tolerated_low_confidence(", snpingene[,"SIFT"], fixed=TRUE)) > 0) resM[mrow, "consequence"] <- "0"
+    if(length(grep("deleterious_low_confidence(", snpingene[,"SIFT"], fixed=TRUE)) > 0) resM[mrow, "consequence"] <- "+"
+    if(length(grep("deleterious(", snpingene[,"SIFT"], fixed=TRUE)) > 0) resM[mrow, "consequence"] <- "++"
   }else{
-    resM[mrow, "missense"] <- "-"
+    resM[mrow, "missense variant"] <- "-"
   }
   mrow <- mrow + 1
+  cat(mrow, "/", length(allgenes), "\n")
 }
 resM[which(resM[,"consequence"] == "++"),]
 
+cat(allgenes, sep="\n", file="listofallgenes.txt")
+
+mgidata <- read.csv("MGIgeneExpressionQuery_2_7_19.txt", sep = "\t", colClasses="character")
+
+table(mgidata[, "Theiler.Stage"])
+
+mgidata = mgidata[which(mgidata[, "Theiler.Stage"] == "28"), ]
+
+mtable = table(mgidata[, "Structure"])
+mtable[mtable > 20]
+
+
+tissues = c("brain", "liver", "pancreas", "skeletal muscle", "hypothalamus")
+mgidata = mgidata[which(mgidata[, "Structure"] %in% tissues),]
+
+resM = cbind(resM, "brain" = NA, "liver" = NA, "pancreas" = NA, "skeletal muscle" = NA, "hypothalamus" = NA)
+rownames(resM) = resM[,1]
+
+for (tissue in tissues){
+	for (gene in allgenes){
+		idx = which(mgidata[, "Gene.Symbol"] == gene)
+		if(length(idx) == 0){
+			resM[gene, tissue] = "?"
+		}else{
+			if(any(tissue %in% mgidata[idx, "Structure"])){
+				resM[gene, tissue] <- "+"
+			}else{
+				resM[gene, tissue] <- "-"
+			}
+		}
+	}
+}
+
+write.table(resM, file = "prioritylist.txt", sep = "\t", quote = FALSE, row.names = FALSE)
 
 
 
-
-for (gene in allgenes) {
-  snpingene <- vepgenes[which(vepgenes[,"Expression Level"] == gene),]
-  Expressioninoneofthe4regions <- any(unique(snpingene[,"Expression"]) == "brain", "liver", "skeleton", "hypothalamus")
-  if(Expressioninoneofthe4regions)
-  }
+#example: samtools view -b -h /halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam "3:30000000-40000000" > ~/flo/860-S12_chr3-30-40mb.bam
+#example: samtools index  ~/flo/860-S12_chr3-30-40mb.bam
 
 
 
+samtools view -b -h /halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam "1:15000000-17000000" > ~/mastersprojectanalysis/subsetchromosome1/chr1-15-17mb.bam
+samtools index  ~/mastersprojectanalysis/subsetchromosome1/chr1-15-17mb.bam
+
+samtools view -b -h /halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam "3:30000000-50000000" > ~/mastersprojectanalysis/subsetchromosome1/chr1-30-50mb.bam
+samtools index  ~/mastersprojectanalysis/subsetchromosome1/chr1-30-50mb.bam
 
 
+samtools view -b -h /halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam "5:10000000-30000000" > ~/mastersprojectanalysis/subsetchromosome1/chr1-10-30mb.bam
+samtools index  ~/mastersprojectanalysis/subsetchromosome1/chr1-10-30mb.bam
 
 
-
-
-
-
+samtools view -b -h /halde/BFMI_Alignment_Mar19/merged_sorted_860-S12.bam "8:8000000-100000000" > ~/mastersprojectanalysis/subsetchromosome1/chr1-8-10mb.bam
+samtools index  ~/mastersprojectanalysis/subsetchromosome1/chr1-8-10mb.bam
 
 
