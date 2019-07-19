@@ -38,6 +38,7 @@ resM <- matrix(NA, length(allgenes), 4)
 resM[,1] <- allgenes
 colnames(resM) <- c("name", "chr", "missense variant", "consequence")
 
+# Create a ranking dataset for the candidate genes
 mrow <- 1
 for (gene in allgenes) {
   snpingene <- vepgenes[which(vepgenes[,"SYMBOL"] == gene),]
@@ -77,18 +78,18 @@ resM = cbind(resM, "brain" = NA, "liver" = NA, "pancreas" = NA, "skeletal muscle
 rownames(resM) = resM[,1]
 
 for (tissue in tissues){
-	for (gene in allgenes){
-		idx = which(mgidata[, "Gene.Symbol"] == gene)
-		if(length(idx) == 0){
-			resM[gene, tissue] = "?"
-		}else{
-			if(any(tissue %in% mgidata[idx, "Structure"])){
-				resM[gene, tissue] <- "+"
-			}else{
-				resM[gene, tissue] <- "-"
-			}
-		}
-	}
+  for (gene in allgenes){
+    idx = which(mgidata[, "Gene.Symbol"] == gene)
+    if(length(idx) == 0){
+      resM[gene, tissue] = "?"
+    }else{
+      if(any(tissue %in% mgidata[idx, "Structure"])){
+        resM[gene, tissue] <- "+"
+      }else{
+        resM[gene, tissue] <- "-"
+      } 
+    }
+  }
 }
 
 write.table(resM, file = "prioritylist.txt", sep = "\t", quote = FALSE, row.names = FALSE)
