@@ -32,10 +32,6 @@ nonSeg <- which(unlist(lapply(apply(genotypes,1,table), function(x){length(x) ==
 genotypes <- genotypes[-nonSeg, ]
 dim(genotypes)
 
-#quick look
-mtab <- apply(genotypes,1,table)
-mtab
-
 # At least 2 groups with 10 observations
 good <- which(unlist(lapply(apply(genotypes,1,table), function(x){
   length(which(x > 10)) >= 2
