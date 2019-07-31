@@ -193,7 +193,7 @@ plot(main = "Lod score curve Chr 1", c(min(as.numeric(chr1[, "Position"])), max(
     axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000, 175000000, 200000000), c("0mb", "25mb", "50mb", "75mb", "100mb", "125mb", "150mb", "175mb", "200mb"))
 
 mmodelLiver <- lm(phenotypes[,"Leber"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
-liver.adj <- resid(mmodel) + coef(mmodel)["(Intercept)"]
+liver.adj <- resid(mmodelLiver) + coef(mmodelLiver)["(Intercept)"]
 	
 topmarkerID <- rownames(chr1[which.max(chr1[,"LiverWeight"]),])
 topmarker <- t(genotypes[topmarkerID,])
