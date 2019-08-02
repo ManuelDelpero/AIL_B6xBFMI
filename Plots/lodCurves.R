@@ -95,7 +95,7 @@ plot(main="Body mass (genotype gUNC5036315)", c(60,140), c(0,70), ylab="Body mas
  legend("topleft",  
   legend = c("B6", "BFMI", "HET"), bg="gray", 
   col = c("lightblue", "lightgreen", "pink"),
-  pch = 15, cex = 0.8, 
+  pch = 15, cex = 0.7, 
   box.col = "black")
  
 # Day 105 effect plot for the second pick
@@ -174,9 +174,9 @@ groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
 bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  ~ genopheno[,"Genotype"], main = "Triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightgreen", "lightblue", "pink"), las =2, xaxt = "n")
-axis(1, at = 1:3 , c("AA", "AG", "GG"))
+axis(1, at = 1:3 , c("GG", "AG", "AA"))
 lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
-	legend("topright", 
+	legend("topright", bg="gray", 
 	legend = c("BFMI", "B6", "HET"), 
        col = c("lightgreen", "lightblue", "pink"),
        pch = 15, cex = 0.8, 
@@ -205,7 +205,7 @@ colnames(genopheno) <- c("Genotype", "LiverWeight")
 bpt <- boxplot(as.numeric(as.character(genopheno[,"LiverWeight"]))  ~ genopheno[,"Genotype"], main = "LiverWeight Topmarker", xlab = "Genotype", ylab = "LiverWeight", col = c("lightblue", "lightgreen", "pink"), las = 2, xaxt = "n")
 axis(1, at = 1:2 , c("AG", "GG"))
 lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
-	legend("topright", 
+	legend("topright", bg="gray",
 	legend = c("HET", "BFMI"), 
        col = c("lightblue", "lightgreen"),
        pch = 15, cex = 0.8, 
