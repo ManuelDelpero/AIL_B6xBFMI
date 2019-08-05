@@ -32,22 +32,22 @@ mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
 layout(mat, widths = rep.int(3, ncol(mat)))
 # lodcurve plots for each time point
 plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
-  points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d70"] , type = "l", col="dodgerblue", lwd = 1)
-  points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="blue", lwd = 1)
-  points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
-  points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d105"] , type = "l", col="purple", lwd = 1)
-  points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d98"] , type = "l", col="dodgerblue4", lwd = 1)
-  abline(h=4.5, col="green")
-  abline(h=4, col="orange")
-  axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
-  legend("topright", bg="gray",
-   legend = c("d63", "d70", "d98", "d105","d140"),
-    col = c("deepskyblue", "dodgerblue", "dodgerblue4", "purple", "blue"),
-    pch = c(20,20,20),
-    pt.cex = 2,
-	pt.bg = "lightsteelblue1",
-    cex = 0.8,
-    text.col = "black")
+ points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d70"] , type = "l", col="dodgerblue", lwd = 1)
+ points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="blue", lwd = 1)
+ points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
+ points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d105"] , type = "l", col="purple", lwd = 1)
+ points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d98"] , type = "l", col="dodgerblue4", lwd = 1)
+ abline(h=4.5, col="green")
+ abline(h=4, col="orange")
+ axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
+ legend("topright", bg="gray",
+ legend = c("d63", "d70", "d98", "d105","d140"),
+  col = c("deepskyblue", "dodgerblue", "dodgerblue4", "purple", "blue"),
+  pch = c(20,20,20),
+  pt.cex = 2,
+  pt.bg = "lightsteelblue1",
+  cex = 0.8,
+  text.col = "black")
 	 
 # Growth curve for each timepoint using the main topmarker
 mmodelD63 <- lm(phenotypes[,"d63"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
@@ -94,7 +94,7 @@ plot(main="Body mass (genotype gUNC5036315)", c(60,140), c(0,70), ylab="Body mas
  lines(c(63, 70, 98, 105, 112, 140), meansHET, col="pink", lwd=1)
  lines(c(62, 69, 97, 104, 112, 139), meansB6, col="blue", lwd=1) 
  legend("topright",  
-  legend = c("BFMI", "HET", "B6"), bg="gray", 
+ legend = c("BFMI", "HET", "B6"), bg="gray", 
   col = c("lightgreen", "pink", "lightblue"),
   pch = 15, pt.cex = 1.5, cex = 0.8, 
   box.col = "black")
@@ -108,14 +108,13 @@ genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
 bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Day 105 second pick", xlab = "Genotype", ylab = "weight (gr.)", col = c("lightgreen", "pink", "lightblue"), notch = TRUE, las =2, xaxt = "n")
-	   axis(1, at = 1:3 , c("CC", "TC", "TT"))
-	  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
-	   legend("topright", bg="gray", 
-	   legend = c("BFMI", "HET", "B6"), 
-       col = c("lightgreen", "pink", "lightblue"),
-       pch = 15, pt.cex = 1.5, cex = 0.8, 
-       box.col = "black"
-       )
+ axis(1, at = 1:3 , c("CC", "TC", "TT"))
+ lines(1:3, bpt$stats[3, ], col="red", lwd=1)
+ legend("topright", bg="gray", 
+ legend = c("BFMI", "HET", "B6"), 
+  col = c("lightgreen", "pink", "lightblue"),
+  pch = 15, pt.cex = 1.5, cex = 0.8, 
+  box.col = "black")
 
 # Day 63 with effect plot
 #par(mfcol=c(2,2))
@@ -164,10 +163,10 @@ dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins"
 chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
 plot(main = "Lod score curve Chr 8", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "Lodscore", xlab = "Position", las = 2, t = "n", xaxt = "n")
-	points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="deepskyblue", lwd = 1)
-	abline(h=4.5, col="green")
-    abline(h=4, col="orange")
-	axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
+ points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="deepskyblue", lwd = 1)
+ abline(h=4.5, col="green")
+ abline(h=4, col="orange")
+ axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
 
 topmarkerID <- rownames(dataset[which.max(dataset[,"Triglycerides/Proteins"]),])
 topmarker <- t(genotypes[topmarkerID,])
@@ -175,14 +174,13 @@ groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
 bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  ~ genopheno[,"Genotype"], main = "Triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightgreen", "lightblue", "pink"), las =2, xaxt = "n")
-axis(1, at = 1:3 , c("GG", "AG", "AA"))
-lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
-	legend("topright", bg="gray", 
-	legend = c("BFMI", "B6", "HET"), 
-       col = c("lightgreen", "lightblue", "pink"),
-       pch = 15, cex = 0.8, 
-       box.col = "darkgreen"
-       )
+ axis(1, at = 1:3 , c("GG", "AG", "AA"))
+ lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
+ legend("topright", bg="gray", 
+ legend = c("BFMI", "B6", "HET"), 
+  col = c("lightgreen", "lightblue", "pink"),
+  pch = 15, cex = 0.8, 
+  box.col = "darkgreen")
 	   
 # Chr 1
 # Dataset, containing columns named: Chr, Pos, marPvalue
@@ -190,10 +188,10 @@ dataset <- lodannotmatrix[, c("Chromosome", "Position", "LiverWeight")]
 chr1 <- dataset[which(dataset[,"Chromosome"] == 1),]
 
 plot(main = "Lod score curve Chr 1", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "Lodscore", xlab = "Position", las = 2, t = "n", xaxt = "n")
-	points(x = as.numeric(chr1[,"Position"]), y = chr1[,"LiverWeight"] , type = "l", col="deepskyblue", lwd = 1)
-	abline(h=4.5, col="green")
-    abline(h=4, col="orange")
-    axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000, 175000000, 200000000), c("0mb", "25mb", "50mb", "75mb", "100mb", "125mb", "150mb", "175mb", "200mb"))
+ points(x = as.numeric(chr1[,"Position"]), y = chr1[,"LiverWeight"] , type = "l", col="deepskyblue", lwd = 1)
+ abline(h=4.5, col="green")
+ abline(h=4, col="orange")
+ axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000, 175000000, 200000000), c("0mb", "25mb", "50mb", "75mb", "100mb", "125mb", "150mb", "175mb", "200mb"))
 
 mmodelLiver <- lm(phenotypes[,"Leber"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
 liver.adj <- resid(mmodelLiver) + coef(mmodelLiver)["(Intercept)"]
@@ -204,11 +202,10 @@ groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
 bpt <- boxplot(as.numeric(as.character(genopheno[,"LiverWeight"]))  ~ genopheno[,"Genotype"], main = "LiverWeight Topmarker", xlab = "Genotype", ylab = "LiverWeight", col = c("lightblue", "lightgreen", "pink"), las = 2, xaxt = "n")
-axis(1, at = 1:2 , c("AG", "GG"))
-lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
-	legend("topright", bg="gray",
-	legend = c("HET", "BFMI"), 
-       col = c("lightblue", "lightgreen"),
-       pch = 15, cex = 0.8, 
-       box.col = "darkgreen"
-       )
+ axis(1, at = 1:2 , c("AG", "GG"))
+ lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
+ legend("topright", bg="gray",
+ legend = c("HET", "BFMI"), 
+  col = c("lightblue", "lightgreen"),
+  pch = 15, cex = 0.8, 
+  box.col = "darkgreen")
