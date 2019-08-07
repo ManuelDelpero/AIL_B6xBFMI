@@ -1,16 +1,11 @@
 #load regions of Manuel, get the candidate genes and perform snp calling
 #can only run on the server 
 
-#written by Sandra Dresen
+#written by Sandra Dresen abd Manuel Delpero
 #first written May, 2019
 
-setwd("/home/sandra/mastersprojectanalysis/allOverNight")
-source("genesinregions.R")
-source("snpcalling.R")
-
-regions <- read.table("QTL_regions52019.txt", sep = "\t", header = TRUE)
-
-setwd("/home/sandra/mastersprojectanalysis/allOverNight/")
+setwd("/home/manuel/AIL_B6xBFMI/RAWDATA/")
+regions <- read.table("QTL_regions_Lod1.5.txt", sep = "\t", header = TRUE)
 
 # Get genes in regions
 genes <- vector("list", nrow(regions))

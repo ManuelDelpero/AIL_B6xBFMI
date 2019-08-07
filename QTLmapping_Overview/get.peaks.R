@@ -16,7 +16,7 @@ mprofiles <- read.table("lodmatrix.adj.txt", sep="\t", row.names=1, header=TRUE)
 
 results <- NULL
 for(x in 1:ncol(mprofiles)){
-  peaks <- peak.detect(mprofiles[,x], markerannot, loddrop = 3)
+  peaks <- peak.detect(mprofiles[,x], markerannot, loddrop = 1.5)
   if(!is.null(peaks)){
     for(p in 1:nrow(peaks)){
       leftPos <- markerannot[peaks[p,1], "Position"]
