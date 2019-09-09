@@ -210,14 +210,23 @@ groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
 bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  ~ genopheno[,"Genotype"], main = "Triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightgreen", "lightblue", "pink"), las =2, xaxt = "n")
- axis(1, at = 1:3 , c("GG", "AG", "AA"))
+ axis(1, at = 1:3 , c("AA", "AG", "GG"))
  lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
  legend("topright", bg="gray", 
  legend = c("BFMI", "HET", "B6"), 
   col = c("lightgreen", "lightblue", "pink"),
   pch = 15, pt.cex = 1.5, cex = 0.8, 
   box.col = "darkgreen")
-	   
+ 
+# Selection of extremes for RTqPCR
+orderedgenopheno <- genopheno[order(as.numeric(genopheno[,"Triglycerides/Proteins"]) ,decreasing = TRUE),]
+BFMI <- orderedgenopheno[which(orderedgenopheno[,"Genotype"] == "AA"),]   
+extremesBFMI <- BFMI[1:5,]                # check the growth curve of each animal
+B6 <- orderedgenopheno[which(orderedgenopheno[,"Genotype"] == "GG"),]
+extremesB6 <- B6[36:41,]                  # check the growth curve of each animal
+write.table(extremesB6, file = "extremesB6.txt", sep="\t", row.names = TRUE)
+write.table(extremesBFMI, file = "extremesBFMI.txt", sep="\t", row.names = TRUE)
+
 # Chr 1
 # Dataset, containing columns named: Chr, Pos, marPvalue
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "LiverWeight")]
