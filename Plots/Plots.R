@@ -1,6 +1,11 @@
+# Plots ideas for the manuscript
+#
+# copyright (c) 2015-2020 - Brockmann group - HU Berlin, Manuel DelPero
+# last modified September, 2019
+# first written August, 2019
+
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
-#genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
@@ -219,14 +224,6 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  
    pch = 15, pt.cex = 1.5, cex = 0.8, 
    box.col = "darkgreen")
  
-# Selection of extremes for RTqPCR
-orderedgenopheno <- genopheno[order(as.numeric(genopheno[,"Triglycerides/Proteins"]) ,decreasing = TRUE),]
-BFMI <- orderedgenopheno[which(orderedgenopheno[,"Genotype"] == "AA"),]   
-extremesBFMI <- BFMI[1:5,]                # check the growth curve of each animal
-B6 <- orderedgenopheno[which(orderedgenopheno[,"Genotype"] == "GG"),]
-extremesB6 <- B6[36:41,]                  # check the growth curve of each animal
-write.table(extremesB6, file = "extremesB6.txt", sep="\t", row.names = TRUE)
-write.table(extremesBFMI, file = "extremesBFMI.txt", sep="\t", row.names = TRUE)
 
 # Chr 1
 # Dataset, containing columns named: Chr, Pos, marPvalue
