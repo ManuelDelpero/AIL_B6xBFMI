@@ -72,12 +72,12 @@ write.table(signannotmatrix, "signannotmatrix.txt", sep = "\t", quote=FALSE)
 # lambda correction for each phenotype
 pvalues.adj <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
 for (pheno in colnames(pvalues.adj)){
-	lambda.B <- round(median(qchisq(1.0 - pmatrix[,pheno], 1), na.rm=TRUE) /  qchisq(0.5, 1),3)
-	if (lambda.B > 1.15){
-		chiSq <- qchisq(pmatrix[,pheno], 1, lower.tail = FALSE)
-		p.adj <- pchisq(chiSq / lambda.B, 1, lower.tail = FALSE)
-	}else{ p.adj <- pmatrix[,pheno] }
-	pvalues.adj[names(p.adj), pheno] <- p.adj
+  lambda.B <- round(median(qchisq(1.0 - pmatrix[,pheno], 1), na.rm=TRUE) /  qchisq(0.5, 1),3)
+    if (lambda.B > 1.15){
+      chiSq <- qchisq(pmatrix[,pheno], 1, lower.tail = FALSE)
+      p.adj <- pchisq(chiSq / lambda.B, 1, lower.tail = FALSE)
+    }else{ p.adj <- pmatrix[,pheno] }
+      pvalues.adj[names(p.adj), pheno] <- p.adj
 }
 
 # additional models	for liver weight and Triglycerides
