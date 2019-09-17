@@ -1,6 +1,6 @@
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
-phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
+phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t")
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 
 topmarkerChr3 <- "gUNC5036315"
@@ -17,7 +17,6 @@ combineddata <- combineddata[-which(is.na(combineddata[,"TriGly"])),]
 
 # BFMI on jObes1
 BFMIlike <- combineddata[which(combineddata[, "topmarkerChr3"] == "AA"),]
-
 BFMI_BFMI <- BFMIlike[which(BFMIlike[, "topmarkerChr8"] == "AA"),]
 BFMI_BFMI <- BFMI_BFMI[sort(as.numeric(BFMI_BFMI[, "TriGly"]), index.return=TRUE, decreasing=TRUE)$ix,]
 
@@ -53,6 +52,7 @@ G3 <- rownames(BFMI_C8[2:9,]) # 8 from BFMI_C8, from 2 since #1 is an outlier
 days <- colnames(phenotypes)[7:24]
 numdays <- as.numeric(gsub("d", "", days))
 
+plot("GrowthCurves_Selected")
 ### Create the plot
 plot(x = c(min(numdays), max(numdays)), y = c(10, 55), t = 'n', ylab="Bodyweight [g]", xlab="Time [days]")
 for(i in G1){
@@ -69,3 +69,5 @@ for(i in G3){
 }
 legend("topleft", c("B6 B6", "BFMI B6", "??? BFMI", "jObes1[b6]", "jObes1[BFMI]"), 
                   col=c("red", "blue", "orange", "black", "black"), lwd=c(1,1,1,NA,NA), pch =c(NA,NA,NA, 16, 17))
+				
+dev.off()
