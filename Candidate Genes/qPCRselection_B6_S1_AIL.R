@@ -52,7 +52,7 @@ G3 <- rownames(BFMI_C8[2:9,]) # 8 from BFMI_C8, from 2 since #1 is an outlier
 days <- colnames(phenotypes)[7:24]
 numdays <- as.numeric(gsub("d", "", days))
 
-plot("GrowthCurves_Selected")
+pdf("GrowthCurves_Selected")
 ### Create the plot
 plot(x = c(min(numdays), max(numdays)), y = c(10, 55), t = 'n', ylab="Bodyweight [g]", xlab="Time [days]")
 for(i in G1){
