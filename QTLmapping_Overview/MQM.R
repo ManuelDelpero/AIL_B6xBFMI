@@ -46,3 +46,24 @@ abline(h = -log10(0.01 / length(lodscores)), col="green")
 pvals.exp <- (rank(d112, ties.method="first")+0.5) / (length(d112) + 1)
 plot(-log10(pvals.exp), -log10(d112))
 abline(a=0, b=1)
+
+# Effect plot with normal genotypes
+genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+topmarker <- t(genotypes["gUNC10595065",])
+genophenoWeight <- cbind(topmarker, phenotypes[,"d112"])
+colnames(genophenoWeight) <- c("Genotype", "d112")
+boxplot(as.numeric(as.character(genophenoWeight[, "d112"]))  ~ genophenoWeight[,"Genotype"],  main = "Body weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen" , "lightblue")))
+
+# LOD curve
+lodmatrix <- data.frame(lodscores)
+markerannot <- markerannot[rownames(genotypes),]
+markerannot <- markerannot[sort(markerannot[,"Position"], index.return=TRUE)$ix,]
+lodannotmatrix <- cbind(annotation[rownames(lodmatrix), ], lodmatrix)
+dataset <- lodannotmatrix[, c("Chromosome", "Position","lodscores")]
+chr6 <- dataset[which(dataset[,"Chromosome"] == 6),]
+
+plot(main = "Lod score curve Chr 6", c(min(as.numeric(chr6[, "Position"])), max(as.numeric(chr6[, "Position"]))), c(0,9), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
+  points(x = as.numeric(chr6[,"Position"]), y = chr6[,"lodscores"] , type = "l", col="dodgerblue", lwd = 1)
+  abline(h=4.5, col="green")
+  abline(h=4, col="orange")
+  axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
