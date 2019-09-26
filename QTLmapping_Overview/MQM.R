@@ -2,7 +2,7 @@
 #
 # copyright (c) - Manuel Delpero
 # first written september, 2019
-# modelling using AIL_B6xS1
+# MQM using AIL_B6xS1
 
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
