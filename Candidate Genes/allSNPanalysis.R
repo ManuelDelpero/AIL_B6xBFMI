@@ -1,6 +1,6 @@
-setwd("C:/Users/User/Desktop/AIL B6xBFMI/candidategenesdata")
+setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
-myvcf <- read.csv("all_combined.vcf", sep = "\t", skip = 169, header=FALSE, colClasses="character")
+myvcf <- read.csv("all_combinedMQM.vcf", sep = "\t", skip = 169, header=FALSE, colClasses="character")
 dim(myvcf)
 
 colnames(myvcf) <- c("CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT", "BFMI860-12", "BFMI861-S1", "BFMI861-S2")
@@ -21,7 +21,7 @@ myvcf <- cbind(location = as.character(paste0(myvcf[,"CHROM"], ":", myvcf[, "POS
 myvcf <- myvcf[which(!duplicated(myvcf[,"location"])),]
 
 # Load the VEP results
-myvep <- read.csv("vep_predictions_6_18_2019.txt", sep = "\t", skip = 1, header=FALSE, colClasses="character")
+myvep <- read.csv("vep_predictionsMQM.txt", sep = "\t", skip = 1, header=FALSE, colClasses="character")
 colnames(myvep) <- c("Uploaded_variation", "Location", "Allele", "Consequence", "IMPACT", "SYMBOL", "Gene", "Feature_type", "Feature", "BIOTYPE", "EXON", "INTRON", "HGVSc", "HGVSp", "cDNA_position", "CDS_position", "Protein_position", "Amino_acids", "Codons", "Existing_variation", "DISTANCE", "STRAND", "FLAGS", "SYMBOL_SOURCE", "HGNC_ID", "TSL", "APPRIS", "REFSEQ_MATCH", "SIFT", "CLIN_SIG", "SOMATIC", "PHENO", "MOTIF_NAME", "MOTIF_POS", "HIGH_INF_POS", "MOTIF_SCORE_CHANGE")
 
 allgenes <- unique(myvep[which(myvep[, "Consequence"] == "missense_variant"),"Location"])

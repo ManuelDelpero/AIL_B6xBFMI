@@ -5,7 +5,7 @@
 #first written May, 2019
 
 setwd("/home/manuel/AIL_B6xBFMI/RAWDATA/")
-regions <- read.table("QTL_regions_Lod1.5.txt", sep = "\t", header = TRUE)
+regions <- read.table("QTL_regionsMQM.txt", sep = "\t", header = TRUE)
 
 # Get genes in regions
 genes <- vector("list", nrow(regions))
@@ -48,6 +48,8 @@ for(x in 1:nrow(uniquegenes)){
   }
   callSNPs(bamfiles, uniquegenes[x, 2], startpos, endpos, uniquegenes[x, 1]) 
 }
+
+setwd("/home/manuel/AIL_B6xBFMI/RAWDATA/SNPsMQM")
 
 filelist <- list.files(".") #we removed all the .txt files
 

@@ -220,9 +220,9 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  
   lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
   legend("topright", bg="gray", 
   legend = c("BFMI", "HET", "B6"), 
-   col = c("lightgreen", "lightblue", "pink"),
-   pch = 15, pt.cex = 1.5, cex = 0.8, 
-   box.col = "darkgreen")
+    col = c("lightgreen", "lightblue", "pink"),
+    pch = 15, pt.cex = 1.5, cex = 0.8, 
+    box.col = "darkgreen")
  
 
 # Chr 1
@@ -249,8 +249,8 @@ bpt <- boxplot(as.numeric(as.character(genopheno[,"LiverWeight"]))  ~ genopheno[
   lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
   legend("topright", bg="gray",
   legend = c("HET", "BFMI"), 
-   col = c("lightblue", "lightgreen"),
-   pch = 15, pt.cex = 1.5, cex = 0.8, 
-   box.col = "darkgreen")
+    col = c("lightblue", "lightgreen"),
+    pch = 15, pt.cex = 1.5, cex = 0.8, 
+    box.col = "darkgreen")
  
 dev.off()
