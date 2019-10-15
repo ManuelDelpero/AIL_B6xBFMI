@@ -71,3 +71,16 @@ legend("topleft", c("B6 B6", "BFMI B6", "??? BFMI", "jObes1[b6]", "jObes1[BFMI]"
                   col=c("red", "blue", "orange", "black", "black"), lwd=c(1,1,1,NA,NA), pch =c(NA,NA,NA, 16, 17))
 				
 dev.off()
+
+pdf("GroupsRTqPCR_before.pdf")
+boxplot(main="Groups for RTqPCR (before)", as.numeric(BFMI_BFMI[,3]), as.numeric(BFMI_B6[,3]) , as.numeric(B6_BFMI[,3]), as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Triglycerides/Proteins", col=c("darkolivegreen", "darkolivegreen1", "darkolivegreen2", "darkolivegreen3") , las = 2)
+  axis(1, at = 1:4 , c("BFMI/BFMI", "BFMI/B6", "B6/BFMI", "B6/B6"))
+dev.off() 
+
+BFMIB6_BFMI <- c(as.numeric(BFMI_BFMI[,3]) , as.numeric(B6_BFMI[,3]))
+
+pdf("GroupsRTqPCR_after.pdf")
+boxplot(main="Groups for RTqPCR (after)", BFMIB6_BFMI, as.numeric(BFMI_B6[,3]) , as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Triglycerides/Proteins",  col=c("darkolivegreen", "darkolivegreen1", "darkolivegreen3"), las = 2)
+  axis(1, at = 1:3 , c("BFMI_B6/BFMI", "BFMI/B6", "B6/B6"))
+
+dev.off()
