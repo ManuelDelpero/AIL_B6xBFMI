@@ -68,11 +68,11 @@ mpm <- cbind(individual, timepoint, weight, sex, wg, mother)
 ### Mapping across the genome using the extended model found above
 # TODO put in chromosome 3 and 6, drop 3 when close to Bbs7, drop 6 when close to topmarker chr 6
 resM <- c()
-for(x in which(annotation[,1] == 3)){
+for(x in 1:nrow(annotation)){
   mgt.AD <- as.numeric(unlist(genotypes[x,mpm[,1]]))
   mgt.DD <- as.numeric(as.numeric(unlist(genotypes[x,mpm[,1]])) != 0)
-  mgt.Chr6 <- 0
-  mgt.chr3 <- 0
+  mgt.topChr6 <- as.numeric(unlist(genotypes["gUNC10595065",mpm[,1]]))
+  mgt.topChr3 <- as.numeric(unlist(genotypes["gUNC5046545", mpm[,1]]))
   
   isMissing <- c(which(is.na(mgt.AD)), which(is.na(mgt.DD)))
 
@@ -92,17 +92,39 @@ for(x in which(annotation[,1] == 3)){
     mgt.AD <- mgt.AD[-isMissing]
     mgt.DD <- mgt.DD[-isMissing]
   }
-
-  tryCatch(
-    model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint, REML=FALSE, control = ctrl)
-  , error = function(e) e)
-  tryCatch(
-    model.add <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.AD + mgt.AD:timepoint, REML=FALSE, control = ctrl)
-  , error = function(e) e)
-  tryCatch(
-    model.null <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual), REML=FALSE, control = ctrl)
-  , error = function(e) e)
-
+  
+  if ((annotation[x, "Chromosome"] == 3) && (annotation[x, "Position"] >=  annotation["gUNC5046545","Position"] - 5000000) && (annotation[x, "Position"] <= annotation["gUNC5046545","Position"] + 5000000)){
+    tryCatch(
+      model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr6 + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint , REML=FALSE, control = ctrl)
+      , error = function(e) e)
+    tryCatch(
+      model.add <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr6 + mgt.AD + mgt.AD:timepoint, REML=FALSE, control = ctrl)
+      , error = function(e) e)
+    tryCatch(
+      model.null <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr6, REML=FALSE, control = ctrl)
+      , error = function(e) e)
+  } else if ((annotation[x, "Chromosome"] == 6) && (annotation[x, "Position"] >=  annotation["gUNC10595065","Position"] - 5000000) && (annotation[x, "Position"] <= annotation["gUNC10595065","Position"] + 5000000)){
+    tryCatch(
+      model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint, REML=FALSE, control = ctrl)
+      , error = function(e) e)
+    tryCatch(
+      model.add <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.AD + mgt.AD:timepoint, REML=FALSE, control = ctrl)
+      , error = function(e) e)
+    tryCatch(
+      model.null <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3, REML=FALSE, control = ctrl)
+      , error = function(e) e)
+  } else{
+   tryCatch(
+     model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6 + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint + mgt.topChr3 + mgt.topChr6, REML=FALSE, control = ctrl)
+     , error = function(e) e)
+   tryCatch(
+     model.add <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6 + mgt.AD + mgt.AD:timepoint, REML=FALSE, control = ctrl)
+     , error = function(e) e)
+   tryCatch(
+     model.null <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6, REML=FALSE, control = ctrl)
+     , error = function(e) e)
+  }
+	 
   pval <- rep(NA, 3)
   tryCatch(pval[1] <- anova(model.full, model.add)["model.full", "Pr(>Chisq)"], error = function(e) e) # Dominance
   tryCatch(pval[2] <- anova(model.add, model.null)["model.add", "Pr(>Chisq)"], error = function(e) e) # Additive
