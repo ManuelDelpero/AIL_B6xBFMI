@@ -132,9 +132,24 @@ for(x in 1:nrow(annotation)){
   resM <- rbind(resM, pval)
 }
 
-plot(annotation[ which(annotation[,1] == 3),2], -log10(resM[,3]), t = 'l')
-points(annotation[ which(annotation[,1] == 3),2], -log10(resM[,2]), t = 'l', col = "red")
-points(annotation[ which(annotation[,1] == 3),2], -log10(resM[,1]), t = 'l', col = "blue")
+write.table(resM, file = "PvalLMMMQM.txt", sep = "\t", row.names = FALSE)
+annotresM <- cbind(annotation, resM)
+
+# Lod curve for Chr3
+plot(x = c(1,nrow(annotresM[which(annotresM[,1] == "3"),])), y = c(0, 16))
+lines(-log10(annotresM[which(annotresM[,1] == "3"), "3"]), col = "blue")
+lines(-log10(annotresM[which(annotresM[,1] == "3"), "1"]), col = "black")
+lines(-log10(annotresM[which(annotresM[,1] == "3"), "2"]), col = "orange")
+  abline(h = -log10(0.05 / nrow(resM)), col="red")
+  abline(h = -log10(0.01 / nrow(resM)), col="green")
+  
+# Manhattan plot
+plot(x = c(1,nrow(annotresM)), y = c(0, 16))
+lines(-log10(annotresM[, "1"]), col = "blue")
+lines(-log10(annotresM[, "2"]), col = "black")
+lines(-log10(annotresM[, "3"]), col = "orange")
+  abline(h = -log10(0.05 / nrow(resM)), col="red")
+  abline(h = -log10(0.01 / nrow(resM)), col="green")
 
 topmarker <- "gUNC5046545"
 mgt.AD <- as.numeric(unlist(genotypes[topmarker, mpm[,1]]))
