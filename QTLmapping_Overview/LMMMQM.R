@@ -2,7 +2,7 @@
 #
 # copyright (c) - Danny Arends & Manuel Delpero
 # first written september, 2019
-# LMMMQM for bodyweight using AIL_B6xS1
+# LMMMQM-TS for bodyweight using AIL_B6xS1
 
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
@@ -151,6 +151,7 @@ lines(-log10(annotresM[, "3"]), col = "orange")
   abline(h = -log10(0.05 / nrow(resM)), col="red")
   abline(h = -log10(0.01 / nrow(resM)), col="green")
 
+# estimated growth curve
 topmarker <- "gUNC5046545"
 mgt.AD <- as.numeric(unlist(genotypes[topmarker, mpm[,1]]))
 mgt.DD <- as.numeric(as.numeric(unlist(genotypes[topmarker, mpm[,1]])) != 0)
@@ -244,6 +245,3 @@ estimates.null <- apply(effectmatrix, 1, function(eff){
   i <<- i + 1
   return(a)
 })
-
-
-
