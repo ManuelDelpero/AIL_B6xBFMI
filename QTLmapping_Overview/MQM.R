@@ -1,8 +1,8 @@
-# AIL_S1xS2 Analysis on Phenotypes
+# AIL_S1xS2 
 #
 # copyright (c) - Manuel Delpero
 # first written september, 2019
-# MQM using AIL_B6xS1
+# MQM for bodyweight (day 112) using AIL_B6xS1
 
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 
@@ -27,7 +27,7 @@ phenonames <- colnames(phenotypes)[-c(1:5)]
 genotypes <- genotypes[rownames(annotation), rownames(phenotypes)]
 write.table(genotypes, "OrderedGenotypes.txt", sep = "\t", quote=FALSE)
 
-# Covariates we could/need to include in the model, we test them on their pvalue
+# Covariates we need to include in the model / tested previously
 sex <- phenotypes[, "Sex"]
 wg <- phenotypes[, "WG"]
 mother <- phenotypes[, "Mutter"]
