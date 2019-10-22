@@ -131,17 +131,72 @@ for(x in 1:nrow(annotation)){
   tryCatch(pval[3] <- anova(model.full, model.null)["model.full", "Pr(>Chisq)"], error = function(e) e) # Dom + Add
   resM <- rbind(resM, pval)
 }
-
-write.table(resM, file = "PvalLMMMQM.txt", sep = "\t", row.names = FALSE)
+colnames(resM) <- c("Dominance", "Additive", "Dom + Add")
+rownames(resM) <- rownames(genotypes)
+write.table(resM, file = "PvalLMMMQMannot.txt", sep = "\t", quote = FALSE)
+resM <- read.table(file = "PvalLMMMQM.txt", sep = "\t", header = TRUE, check.names = FALSE)
 annotresM <- cbind(annotation, resM)
 
+# QQplot
+pvals.exp <- (rank(resM[,3], ties.method="first")+0.5) / (nrow(resM) + 1)
+  plot(-log10(pvals.exp), -log10(resM[,3]))
+  abline(a=0, b=1)
+  
+genotypesChr3 <- genotypes[which(annotresM[,1] == "3"),]
+
+# Get the genotype freq for each marker
+BFMIGen <- c()
+B6Gen <- c()
+HETGen <- c()
+MISSgen <- c()
+for (x in 1:nrow(genotypesChr3)){
+  if (((length(apply(genotypesChr3[x,], 1, table))) == 2) && (!("0" %in% genotypesChr3[x,]))) {
+    B6 <- apply(genotypesChr3[x,], 1, table)[[2]]
+    MISS <- 133 - (apply(genotypesChr3[x,], 1, table)[[2]] + apply(genotypesChr3[x,], 1, table)[[1]])
+    BFMI <- apply(genotypesChr3[x,], 1, table)[[1]]
+  }else if (((length(apply(genotypesChr3[x,], 1, table))) == 2) && (!("1" %in% genotypesChr3[x,]))) {
+    B6 <- 0
+    HET <- apply(genotypesChr3[x,], 1, table)[[2]]
+	MISS <- 133 - (apply(genotypesChr3[x,], 1, table)[[2]] + apply(genotypesChr3[x,], 1, table)[[1]])
+    BFMI <- apply(genotypesChr3[x,], 1, table)[[1]]
+  }else if  (((length(apply(genotypesChr3[x,], 1, table))) == 2) && (!("-1" %in% genotypesChr3[1,]))) {
+    B6 <- apply(genotypesChr3[x,], 1, table)[[2]]
+	MISS <- 133 - (apply(genotypesChr3[x,], 1, table)[[2]] + apply(genotypesChr3[x,], 1, table)[[1]])
+    HET <- apply(genotypesChr3[x,], 1, table)[[1]]
+    BFMI <- 0
+  }else if  ((length(apply(genotypesChr3[x,], 1, table))) == 3) {
+    B6 <- apply(genotypesChr3[x,], 1, table)[[3]]
+    HET <- apply(genotypesChr3[x,], 1, table)[[2]]
+    BFMI <- apply(genotypesChr3[x,], 1, table)[[1]]
+  }
+ 
+  BFMIGen <- c(BFMIGen, BFMI)
+  B6Gen <- c(B6Gen, B6)
+  HETGen <- c(HETGen, HET)
+}
+
+BFMIGen <- BFMIGen/1.33
+B6Gen <- B6Gen/1.33
+HETGen <- HETGen/1.33
+BFMIGen <- BFMIGen * 0.16
+B6Gen <- B6Gen* 0.16
+HETGen <- HETGen * 0.16
+
+
 # Lod curve for Chr3
-plot(x = c(1,nrow(annotresM[which(annotresM[,1] == "3"),])), y = c(0, 16))
-lines(-log10(annotresM[which(annotresM[,1] == "3"), "3"]), col = "blue")
-lines(-log10(annotresM[which(annotresM[,1] == "3"), "1"]), col = "black")
-lines(-log10(annotresM[which(annotresM[,1] == "3"), "2"]), col = "orange")
+plot(x = c(min(annotresM[which(annotresM[,1] == "3"), "Position"]), max(annotresM[which(annotresM[,1] == "3"), "Position"])), y = c(0, 16),  ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = -log10(as.numeric(annotresM[which(annotresM[,1] == "3"), "V3"])), col = "blue")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = -log10(annotresM[which(annotresM[,1] == "3"), "V1"]), col = "black")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = -log10(annotresM[which(annotresM[,1] == "3"), "V2"]), col = "red")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = HETGen, col = "orange")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = B6Gen, col = "red")
+  lines(x = annotresM[which(annotresM[,1] == "3"), "Position"], y = BFMIGen, col = "blue")
+  axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
   abline(h = -log10(0.05 / nrow(resM)), col="red")
   abline(h = -log10(0.01 / nrow(resM)), col="green")
+  
+# Zoom in the FOXO1 region
+
   
 # Manhattan plot
 plot(x = c(1,nrow(annotresM)), y = c(0, 16))
