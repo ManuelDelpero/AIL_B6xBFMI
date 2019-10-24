@@ -115,7 +115,7 @@ for(x in 1:nrow(annotation)){
       , error = function(e) e)
   } else{
    tryCatch(
-     model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6 + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint + mgt.topChr3 + mgt.topChr6, REML=FALSE, control = ctrl)
+     model.full <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6 + mgt.AD + mgt.AD:timepoint + mgt.DD + mgt.DD:timepoint, REML=FALSE, control = ctrl)
      , error = function(e) e)
    tryCatch(
      model.add <- lmer(weight ~ mother + sex + timepoint + I(timepoint^2) + I(timepoint^3) + (timepoint|individual) + mgt.topChr3 + mgt.topChr6 + mgt.AD + mgt.AD:timepoint, REML=FALSE, control = ctrl)
@@ -181,7 +181,6 @@ HETGen <- HETGen/1.33
 BFMIGen <- BFMIGen * 0.16
 B6Gen <- B6Gen* 0.16
 HETGen <- HETGen * 0.16
-
 
 # Lod curve for Chr3
 plot(x = c(min(annotresM[which(annotresM[,1] == "3"), "Position"]), max(annotresM[which(annotresM[,1] == "3"), "Position"])), y = c(0, 16),  ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
