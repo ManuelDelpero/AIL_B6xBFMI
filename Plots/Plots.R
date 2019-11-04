@@ -33,12 +33,12 @@ dataset <- lodannotmatrix[, c("Chromosome", "Position", "d28", "d49", "d35", "d4
 chr3 <- dataset[which(dataset[,"Chromosome"] == 3),]
 signMarkers <- dataset[which(dataset[,"d98"] > 4.5),]
 
-pdf("LodCuvers.pdf")
 
+par(cex.lab=1.6, cex.main = 1.8, cex.axis = 1.6)
 mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
 layout(mat, widths = rep.int(3, ncol(mat)))
 # lodcurve plots for each time point
-plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile bodyweight (Chr 3)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d70"] , type = "l", col="dodgerblue", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="blue", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
@@ -48,15 +48,15 @@ plot(main = "Lod score curve Chr 3", c(min(as.numeric(chr3[, "Position"])), max(
   abline(h=4, col="orange")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0 mb", "25 mb", "50 mb", "75 mb", "100 mb", "125 mb", "150 mb"))
   legend("topright", bg="gray",
-  legend = c("d63", "d70", "d98", "d105","d140"),
+  legend = c("Week 9", "Week 10", "Week 14", "Week 15","Week 20"),
     col = c("deepskyblue", "dodgerblue", "dodgerblue4", "purple", "blue"),
     pch = c(20,20,20),
-    pt.cex = 2,
+    pt.cex = 2.5,
     pt.bg = "lightsteelblue1",
-    cex = 0.8,
+    cex = 1.5,
     text.col = "black")
 
-dev.off()
+
   
 # Growth curve for each timepoint using the main topmarker
 mmodelD28 <- lm(phenotypes[,"d28"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
@@ -103,7 +103,6 @@ genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140)	 
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
 
-pdf("GrowthCurve.pdf")
 
 plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
   rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
@@ -129,12 +128,37 @@ plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mas
   legend("topright",  
   legend = c("BFMI", "HET", "B6"), bg="gray", 
    col = c("lightgreen", "pink", "lightblue"),
-   pch = 15, pt.cex = 1.5, cex = 0.8, 
+   pch = 15, pt.cex = 1.7, cex = 1.5, 
    box.col = "black")
 
-dev.off()
+timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)   
+plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
+  rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
+  rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
+  axis(1, at = c(28, 42, 56, 70, 84, 98, 112, 126, 140), c("4", "6", "8", "10", "12", "14", "16", "18", "20"), lwd = 1, cex.axis=1.6)
+  meansBFMI <- c()
+  meansHET <- c()
+  meansB6 <- c()
+  for (x in timepoints){
+   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   meanBFMI <- bptBFMI$stats[3,] 
+   meansBFMI <- c(meansBFMI, meanBFMI)
+   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   meanHET <- bptHET$stats[3,]
+   meansHET <- c(meansHET, meanHET)
+   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   meanB6 <- bptB6$stats[3,]
+   meansB6 <- c(meansB6, meanB6)
+  }
+  lines(c(28, 42, 56, 70, 84, 98, 112, 126, 140), meansBFMI, col="green", lwd=1)
+  lines(c(28, 42, 56, 70, 84, 98, 112, 126, 140), meansHET, col="pink", lwd=1)
+  lines(c(28, 42, 56, 70, 84, 98, 112, 126, 140), meansB6, col="blue", lwd=1) 
+  legend("topleft",  
+  legend = c("BFMI", "HET", "B6"), bg="gray", 
+   col = c("lightgreen", "pink", "lightblue"),
+   pch = 15, pt.cex = 1.7, cex = 1.5, 
+   box.col = "black")
 
-pdf("D105SeconPeak.pdf")
  
 # Day 105 effect plot for the second peak
 topmarker <- t(genotypes["SBR032134332",])
@@ -144,16 +168,16 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Day 105 second peak", xlab = "Genotype", ylab = "weight (gr.)", col = c("lightgreen", "pink", "lightblue"), notch = TRUE, las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 (second peak)", xlab = "Genotype", ylab = "weight (gr.)", col = c("lightgreen", "pink", "lightblue"), notch = TRUE, las =2, xaxt = "n")
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
  legend("topright", bg="gray", 
  legend = c("BFMI", "HET", "B6"), 
   col = c("lightgreen", "pink", "lightblue"),
-  pch = 15, pt.cex = 1.5, cex = 0.8, 
+  pch = 15, pt.cex = 1.7, cex = 1.5, 
   box.col = "black")
  
-dev.off()
+
 
 # Day 63 with effect plot
 #par(mfcol=c(2,2))
@@ -202,9 +226,8 @@ par(mfrow = c(2,2))
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins")]
 chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
-pdf("Chr8_Chr1.pdf")
 
-plot(main = "Lod score curve Chr 8", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile liver triglycerides (Chr 8)", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="deepskyblue", lwd = 1)
   abline(h=4.5, col="green")
   abline(h=4, col="orange")
@@ -221,7 +244,7 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  
   legend("topright", bg="gray", 
   legend = c("BFMI", "HET", "B6"), 
     col = c("lightgreen", "lightblue", "pink"),
-    pch = 15, pt.cex = 1.5, cex = 0.8, 
+    pch = 15, pt.cex = 1.7, cex = 1.5, 
     box.col = "darkgreen")
  
 
@@ -230,7 +253,7 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "LiverWeight")]
 chr1 <- dataset[which(dataset[,"Chromosome"] == 1),]
 
-plot(main = "Lod score curve Chr 1", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile liver triglycerides (Chr 1)", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr1[,"Position"]), y = chr1[,"LiverWeight"] , type = "l", col="deepskyblue", lwd = 1)
   abline(h=4.5, col="green")
   abline(h=4, col="orange")
@@ -250,7 +273,7 @@ bpt <- boxplot(as.numeric(as.character(genopheno[,"LiverWeight"]))  ~ genopheno[
   legend("topright", bg="gray",
   legend = c("HET", "BFMI"), 
     col = c("lightblue", "lightgreen"),
-    pch = 15, pt.cex = 1.5, cex = 0.8, 
+    pch = 15, pt.cex = 1.7, cex = 1.5, 
     box.col = "darkgreen")
  
 dev.off()
