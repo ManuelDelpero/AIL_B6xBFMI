@@ -38,7 +38,7 @@ par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.6)
 mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
 layout(mat, widths = rep.int(3, ncol(mat)))
 # lodcurve plots for each time point
-plot(main = "QTL profile bodyweight (Chr 3)", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10(pvalue)", xlab = "Position (mb)", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile bodyweight [Chr 3]", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10 [pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d70"] , type = "l", col="dodgerblue", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="blue", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="deepskyblue", lwd = 1)
@@ -50,8 +50,8 @@ plot(main = "QTL profile bodyweight (Chr 3)", c(min(as.numeric(chr3[, "Position"
   legend("topright", bg="gray",
   legend = c("Week 9", "Week 10", "Week 14", "Week 15","Week 20"),
     col = c("deepskyblue", "dodgerblue", "dodgerblue4", "purple", "blue"),
-    pch = c(20,20,20),
-    pt.cex = 2.5,
+    pch = 15,
+    pt.cex = 1.7,
     pt.bg = "lightsteelblue1",
     cex = 1,
     text.col = "black")
@@ -104,7 +104,7 @@ colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98,
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
 
 
-plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
+plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
   rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
   axis(1, at = c(28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140), c("4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"), lwd = 1, cex.axis=1)
@@ -132,7 +132,7 @@ plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mas
    box.col = "black")
 
 timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)   
-plot(main="Body mass (genotype gUNC5036315)", c(25,140), c(0,70), ylab="Body mass [gr.]", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
+plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass [gr.]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
   rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
   axis(1, at = c(28, 42, 56, 70, 84, 98, 112, 126, 140), c("4", "6", "8", "10", "12", "14", "16", "18", "20"), lwd = 1, cex.axis=1.6)
@@ -168,7 +168,7 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 (second peak)", xlab = "Genotype", ylab = "weight [gr.]", col = c("lightgreen", "pink", "lightblue"), notch = TRUE, las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 [second peak]", xlab = "Genotype", ylab = "weight [gr.]", col = c("lightgreen", "pink", "lightblue"), las =2, xaxt = "n")
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
  legend("topright", bg="gray", 
@@ -218,7 +218,6 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Geno
        #pch = c(19, 19), cex = 0.8, 
        #box.col = "darkgreen"
        #)
-	   
 # Chr 8
 # Dataset, containing columns named: Chr, Pos, marPvalue
 
