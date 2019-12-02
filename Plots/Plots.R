@@ -112,13 +112,13 @@ plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mas
   meansHET <- c()
   meansB6 <- c()
   for (x in timepoints){
-   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
    meanBFMI <- bptBFMI$stats[3,] 
    meansBFMI <- c(meansBFMI, meanBFMI)
-   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
    meanHET <- bptHET$stats[3,]
    meansHET <- c(meansHET, meanHET)
-   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
    meanB6 <- bptB6$stats[3,]
    meansB6 <- c(meansB6, meanB6)
   }
@@ -132,7 +132,7 @@ plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mas
    box.col = "black")
 
 timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)   
-plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass [gr.]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
+plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass [g.]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
   rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
   axis(1, at = c(28, 42, 56, 70, 84, 98, 112, 126, 140), c("4", "6", "8", "10", "12", "14", "16", "18", "20"), lwd = 1, cex.axis=1.6)
@@ -140,13 +140,13 @@ plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mas
   meansHET <- c()
   meansB6 <- c()
   for (x in timepoints){
-   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 1.5) 
    meanBFMI <- bptBFMI$stats[3,] 
    meansBFMI <- c(meansBFMI, meanBFMI)
-   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 1.5) 
    meanHET <- bptHET$stats[3,]
    meansHET <- c(meansHET, meanHET)
-   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5) 
+   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 1.5) 
    meanB6 <- bptB6$stats[3,]
    meansB6 <- c(meansB6, meanB6)
   }
@@ -168,7 +168,7 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 [second peak]", xlab = "Genotype", ylab = "weight [gr.]", col = c("lightgreen", "pink", "lightblue"), las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 [distal peak]", xlab = "Genotype", ylab = "Weight [g.]", col = c("lightgreen", "pink", "lightblue"), las =2, xaxt = "n")
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
  legend("topright", bg="gray", 
