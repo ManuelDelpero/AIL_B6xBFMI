@@ -1,11 +1,8 @@
-#load regions of Manuel, get the candidate genes and perform snp calling
-#can only run on the server 
-
-#written by Sandra Dresen abd Manuel Delpero
+#written by Manuel Delpero
 #first written May, 2019
 
-setwd("/home/manuel/AIL_B6xBFMI/RAWDATA/")
-regions <- read.table("QTL_regionsMQM.txt", sep = "\t", header = TRUE)
+setwd("/home/manuel/AIL_B6xBFMI/RAWDATA_GENERAL/SNPs/")
+regions <- read.table("QTL_regions_Lod1.5.txt", sep = "\t", header = TRUE)
 
 # Get genes in regions
 genes <- vector("list", nrow(regions))
@@ -49,7 +46,6 @@ for(x in 1:nrow(uniquegenes)){
   callSNPs(bamfiles, uniquegenes[x, 2], startpos, endpos, uniquegenes[x, 1]) 
 }
 
-setwd("/home/manuel/AIL_B6xBFMI/RAWDATA/SNPsMQM")
 
 filelist <- list.files(".") #we removed all the .txt files
 
@@ -62,9 +58,18 @@ for(file in filelist){
   }
 }
 
+# Sort by chromosomes and position otherwise VEP is complaining
+allSNPs <- allSNPs[order(as.numeric(allSNPs[,3])),]
+chromosomes <- c(1, 3, 5, 8)
+
+annotation <- c()
+for(chr in chromosomes){
+  annotation <- rbind(annotation, allSNPs[as.numeric(allSNPs[,"V1"]) == chr,])
+}
+
+allSNPs <- annotation
+
 header = readLines(filelist[1], n = 169)
 cat(paste0(header, collapse = "\n"), "\n", file = "all_combined.vcf")
 # File containing all SNPs in the genes
 write.table(allSNPs[,-1], file = "all_combined.vcf", sep = "\t", quote=FALSE, append = TRUE, col.names=FALSE, row.names= FALSE)
-
-q("no")
