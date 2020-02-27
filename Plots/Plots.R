@@ -1,6 +1,6 @@
 # Plots ideas for the manuscript
 #
-# copyright (c) 2018-2021 - Brockmann group - HU Berlin, Manuel DelPero
+# copyright (c) 2018-2021 - Brockmann group - HU Berlin, Manuel Delpero
 # last modified September, 2019
 # first written August, 2019
 
@@ -33,7 +33,6 @@ dataset <- lodannotmatrix[, c("Chromosome", "Position", "d28", "d49", "d35", "d4
 chr3 <- dataset[which(dataset[,"Chromosome"] == 3),]
 signMarkers <- dataset[which(dataset[,"d98"] > 4.5),]
 
-
 par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.6)
 mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
 layout(mat, widths = rep.int(3, ncol(mat)))
@@ -55,9 +54,7 @@ plot(main = "QTL profile bodyweight [Chr 3]", c(min(as.numeric(chr3[, "Position"
     pt.bg = "lightsteelblue1",
     cex = 1,
     text.col = "black")
-
-
-  
+ 
 # Growth curve for each timepoint using the main topmarker
 mmodelD28 <- lm(phenotypes[,"d28"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
 d28.adj <- resid(mmodelD28) + coef(mmodelD28)["(Intercept)"]
@@ -102,7 +99,6 @@ genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140)	 
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
-
 
 plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
   rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
@@ -159,7 +155,6 @@ plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mas
    pch = 15, pt.cex = 1.7, cex = 1, 
    box.col = "black")
 
- 
 # Day 105 effect plot for the second peak
 topmarker <- t(genotypes["SBR032134332",])
 groupsSize <- apply(genotypes,1,  table)[["SBR032134332"]]
@@ -177,7 +172,6 @@ bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Geno
   pch = 15, pt.cex = 1.7, cex = 1, 
   box.col = "black")
  
-
 
 # Day 63 with effect plot
 #par(mfcol=c(2,2))
