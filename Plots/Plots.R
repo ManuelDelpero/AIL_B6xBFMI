@@ -194,7 +194,7 @@ dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins"
 chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
 
-plot(main = "QTL profile liver triglycerides (Chr 8)", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position (mb)", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile liver triglycerides [Chr 8]", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10[pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="deepskyblue", lwd = 1)
   abline(h=4.5, col="green")
   abline(h=4, col="orange")
@@ -220,7 +220,7 @@ bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])
 dataset <- lodannotmatrix[, c("Chromosome", "Position", "LiverWeight")]
 chr1 <- dataset[which(dataset[,"Chromosome"] == 1),]
 
-plot(main = "QTL profile liver weight (Chr 1)", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "-log10(pvalue)", xlab = "Position (mb)", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile liver weight [Chr 1]", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "-log10[pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr1[,"Position"]), y = chr1[,"LiverWeight"] , type = "l", col="deepskyblue", lwd = 1)
   abline(h=4.5, col="green")
   abline(h=4, col="orange")
@@ -242,5 +242,3 @@ bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])
     col = c("lightskyblue1", "cyan3"),
     pch = 15, pt.cex = 1.7, cex = 1, 
     box.col = "darkgreen")
- 
-dev.off()
