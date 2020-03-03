@@ -99,38 +99,8 @@ genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140)	 
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
-
-<<<<<<< HEAD
-=======
-plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,70), ylab="Body mass (grams)", xlab="Age (weeks)", yaxs = "i", las = 2, t = "n", xaxt="n")
-  rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
-  rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
-  axis(1, at = c(28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140), c("4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"), lwd = 1, cex.axis=1)
-  meansBFMI <- c()
-  meansHET <- c()
-  meansB6 <- c()
-  for (x in timepoints){
-   bptBFMI <- boxplot(at = x+1, as.numeric(as.character(genopheno[which(genopheno == "BFMI"), as.character(x)]))  ~ genopheno[which(genopheno == "BFMI"),"Genotype"], width=6, col = "lightgreen", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
-   meanBFMI <- bptBFMI$stats[3,] 
-   meansBFMI <- c(meansBFMI, meanBFMI)
-   bptHET <- boxplot(at = x, as.numeric(as.character(genopheno[which(genopheno == "HET"), as.character(x)]))  ~ genopheno[which(genopheno == "HET"),"Genotype"], width=6, col = "pink", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
-   meanHET <- bptHET$stats[3,]
-   meansHET <- c(meansHET, meanHET)
-   bptB6 <- boxplot(at = x-1, as.numeric(as.character(genopheno[which(genopheno == "B6"), as.character(x)]))  ~ genopheno[which(genopheno == "B6"),"Genotype"], width=6, col = "lightblue", axes = FALSE, add=TRUE, notch= TRUE, outcex=0.5, boxwex = 3) 
-   meanB6 <- bptB6$stats[3,]
-   meansB6 <- c(meansB6, meanB6)
-  }
-  lines(c(28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140), meansBFMI, col="green", lwd=1)
-  lines(c(28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140), meansHET, col="pink", lwd=1)
-  lines(c(28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119, 126, 133, 140), meansB6, col="blue", lwd=1) 
-  legend("topright",  
-  legend = c("BFMI", "HET", "B6"), bg="gray", 
-   col = c("lightgreen", "pink", "lightblue"),
-   pch = 15, pt.cex = 1.7, cex = 1, 
-   box.col = "black")
-
->>>>>>> 09b96da42d80e7a9f9e5a83cb1412f07ac8c2076
-timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)   
+timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)  
+ 
 plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,55), ylab="Body mass [g.]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
   #rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   #rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
@@ -166,10 +136,10 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[, "d105"]))  ~ genopheno[,"Genotype"], width = c(0.2, 0.2, 0.2), main = "Week 15 [distal peak]", xlab = "Genotype", ylab = "Weight [g.]", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n", ylim = c(0, 70))
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "TC"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "CC"),])), width = c(0.2, 0.2, 0.2), main = "Week 15 [distal peak]", xlab = "Genotype", ylab = "Weight [g.]", col = c("dodgerblue4", "cyan3", "lightskyblue1"), las =2, xaxt = "n", ylim = c(0, 70))
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
- legend("topright", bg="gray", 
+ legend("topleft", bg="gray", 
  legend = c("BFMI", "HET", "B6"), 
   col = c("lightskyblue1", "cyan3", "dodgerblue4"),
   pch = 15, pt.cex = 1.7, cex = 1, 
@@ -235,10 +205,10 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
-bpt <- boxplot(as.numeric(as.character(genopheno[, "Triglycerides/Proteins"]))  ~ genopheno[,"Genotype"], main = "Liver triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
   axis(1, at = 1:3 , c("AA", "AG", "GG"))
   lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
-  legend("topright", bg="gray", 
+  legend("topleft", bg="gray", 
   legend = c("BFMI", "HET", "B6"), 
     col = c("lightskyblue1", "cyan3", "dodgerblue4"),
     pch = 15, pt.cex = 1.7, cex = 1, 
@@ -264,10 +234,10 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
-bpt <- boxplot(as.numeric(as.character(genopheno[,"LiverWeight"]))  ~ genopheno[,"Genotype"], main = "LiverWeight Topmarker", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "LiverWeight Topmarker", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
   axis(1, at = 1:2 , c("AG", "GG"))
   lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
-  legend("topright", bg="gray",
+  legend("topleft", bg="gray",
   legend = c("HET", "BFMI"), 
     col = c("lightskyblue1", "cyan3"),
     pch = 15, pt.cex = 1.7, cex = 1, 
