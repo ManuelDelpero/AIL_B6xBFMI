@@ -205,7 +205,7 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides/Proteins Topmarker", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides/Proteins[genotype S1H083826428]", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
   axis(1, at = 1:3 , c("AA", "AG", "GG"))
   lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
   legend("topleft", bg="gray", 
@@ -234,7 +234,7 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "LiverWeight Topmarker", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "LiverWeight [genotype gUNC2036998]", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
   axis(1, at = 1:2 , c("AG", "GG"))
   lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
   legend("topleft", bg="gray",
