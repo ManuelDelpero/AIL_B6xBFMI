@@ -46,7 +46,7 @@ plot(main = "QTL profile bodyweight [Chr 3]", c(min(as.numeric(chr3[, "Position"
   abline(h=4.5, col="green")
   abline(h=4, col="orange")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0", "25", "50", "75", "100", "125", "150"))
-  legend("topright", bg="gray",
+  legend("topright", bg = "white",
   legend = c("Week 9", "Week 10", "Week 14", "Week 15","Week 20"),
     col = c("deepskyblue", "dodgerblue", "dodgerblue4", "purple", "blue"),
     pch = 15,
@@ -101,7 +101,7 @@ colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98,
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
 timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)  
  
-plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,55), ylab="Body mass [g.]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
+plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,55), ylab="Body mass [g]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
   #rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   #rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
   axis(1, at = c(28, 42, 56, 70, 84, 98, 112, 126, 140), c("4", "6", "8", "10", "12", "14", "16", "18", "20"), lwd = 1, cex.axis=1.6)
@@ -123,10 +123,10 @@ plot(main="Body mass [genotype gUNC5036315]", c(25,140), c(0,55), ylab="Body mas
   lines(c(28, 42, 56, 70, 84, 98, 112, 126, 140), meansHET, col="cyan3", lwd=1)
   lines(c(28, 42, 56, 70, 84, 98, 112, 126, 140), meansB6, col="dodgerblue4", lwd=1) 
   legend("topleft",  
-  legend = c("BFMI", "HET", "B6"), bg="gray", 
+  legend = c("BFMI", "HET", "B6"), 
    col = c("lightskyblue1", "cyan3", "dodgerblue4"),
    pch = 15, pt.cex = 1.7, cex = 1, 
-   box.col = "black")
+   )
 
 # Day 105 effect plot for the second peak
 topmarker <- t(genotypes["SBR032134332",])
@@ -136,14 +136,14 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "TC"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "CC"),])), width = c(0.2, 0.2, 0.2), main = "Week 15 [genotype SBR032134332]", xlab = "Genotype", ylab = "Weight [g.]", col = c("dodgerblue4", "cyan3", "lightskyblue1"), las =2, xaxt = "n", ylim = c(0, 70))
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "TC"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "CC"),])), width = c(0.2, 0.2, 0.2), main = "Week 15 [genotype SBR032134332]", xlab = "Genotype", ylab = "Weight [g]", col = c("dodgerblue4", "cyan3", "lightskyblue1"), las =2, xaxt = "n", ylim = c(0, 70))
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
- legend("topleft", bg="gray", 
+ legend("topleft",  
  legend = c("BFMI", "HET", "B6"), 
   col = c("lightskyblue1", "cyan3", "dodgerblue4"),
   pch = 15, pt.cex = 1.7, cex = 1, 
-  box.col = "black")
+  )
  
 
 # Day 63 with effect plot
@@ -205,14 +205,14 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides/Proteins[genotype S1H083826428]", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides [genotype S1H083826428]", xlab = "Genotype", ylab = "Relative triglycerides [%]", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las =2, xaxt = "n")
   axis(1, at = 1:3 , c("AA", "AG", "GG"))
   lines(1:3, bpt$stats[ 3, ], col="red", lwd=1)
-  legend("topleft", bg="gray", 
+  legend("topleft", 
   legend = c("BFMI", "HET", "B6"), 
     col = c("lightskyblue1", "cyan3", "dodgerblue4"),
     pch = 15, pt.cex = 1.7, cex = 1, 
-    box.col = "darkgreen")
+	)
  
 
 # Chr 1
@@ -234,11 +234,11 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "Liver Weight [genotype gUNC2036998]", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "Liver Weight [genotype gUNC2036998]", xlab = "Genotype", ylab = "Liver Weight [g]", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
   axis(1, at = 1:2 , c("AG", "GG"))
   lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
-  legend("topleft", bg="gray",
+  legend("topleft",
   legend = c("HET", "BFMI"), 
     col = c("lightskyblue1", "cyan3"),
     pch = 15, pt.cex = 1.7, cex = 1, 
-    box.col = "darkgreen")
+	)
