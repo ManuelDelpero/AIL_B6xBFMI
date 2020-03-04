@@ -136,7 +136,7 @@ genopheno <- gsub("AA" ,"BFMI", genopheno)
 genopheno <- gsub("AG" ,"HET", genopheno)
 genopheno <- gsub("GG", "B6", genopheno)
 colnames(genopheno) <- c("Genotype", "d105")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "TC"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "CC"),])), width = c(0.2, 0.2, 0.2), main = "Week 15 [distal peak]", xlab = "Genotype", ylab = "Weight [g.]", col = c("dodgerblue4", "cyan3", "lightskyblue1"), las =2, xaxt = "n", ylim = c(0, 70))
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "TC"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "CC"),])), width = c(0.2, 0.2, 0.2), main = "Week 15 [genotype SBR032134332]", xlab = "Genotype", ylab = "Weight [g.]", col = c("dodgerblue4", "cyan3", "lightskyblue1"), las =2, xaxt = "n", ylim = c(0, 70))
  axis(1, at = 1:3 , c("CC", "TC", "TT"))
  lines(1:3, bpt$stats[3, ], col="red", lwd=1)
  legend("topleft", bg="gray", 
@@ -234,7 +234,7 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "LiverWeight [genotype gUNC2036998]", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "Liver Weight [genotype gUNC2036998]", xlab = "Genotype", ylab = "LiverWeight", col = c("lightskyblue1", "cyan3", "dodgerblue4"), las = 2, xaxt = "n")
   axis(1, at = 1:2 , c("AG", "GG"))
   lines(1:2, bpt$stats[ 3, ], col="red", lwd=1)
   legend("topleft", bg="gray",
