@@ -231,9 +231,9 @@ groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
 bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "Liver weight [SNP gUNC2036998]", xlab = "Genotype", ylab = "[g]", col = c("gray50", "gray20", "gray88"), las = 2, xaxt = "n")
-  axis(1, at = 1:2 , c("AG", "GG"))
+  axis(1, at = 1:2 , c("GG", "AG"))
   legend("topleft",
-  legend = c("HET", "BFMI"), 
-    col = c("gray50", "gray20"),
+  legend = c("BFMI", "HET"), 
+    col = c("gray20", "gray50"),
     pch = 15, pt.cex = 1.7, cex = 1, bty = "n"
 	)
