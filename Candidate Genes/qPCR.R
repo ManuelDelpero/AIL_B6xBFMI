@@ -154,25 +154,40 @@ colnames(redo) <- c("Sample", "Gene")
 redo
 
 # Barplots to represent the results
-genesCAP <- rbind(as.numeric(pvals[35, "Mean GT1"]), as.numeric(pvals[33, "Mean GT1"]), as.numeric(pvals[33, "Mean GT2"])) / as.numeric(pvals[35, "Mean GT1"])
+genesCAP <- rbind(as.numeric(pvals[35, "Mean GT1"]), as.numeric(pvals[33, "Mean GT1"]), as.numeric(pvals[33, "Mean GT2"])) 
 genesCAP <- cbind(genesCAP, c("Capns2[B6_B6]", "Capns2[x_BFMI]", "Capns2[BFMI_B6]"))
-genes1B <- rbind(as.numeric(pvals[5,"Mean GT1"]), as.numeric(pvals[4, "Mean GT1"]), as.numeric(pvals[4, "Mean GT2"])) / as.numeric(pvals[5,"Mean GT1"])
+genes1B <- rbind(as.numeric(pvals[2,"Mean GT2"]), as.numeric(pvals[2, "Mean GT1"]), as.numeric(pvals[4, "Mean GT2"])) 
 genes1B <- cbind(genes1B, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
-genes1C <- rbind(as.numeric(pvals[8, "Mean GT2"]), as.numeric(pvals[8, "Mean GT1"]), as.numeric(pvals[10, "Mean GT2"])) / as.numeric(pvals[8, "Mean GT2"])
+genes1C <- rbind(as.numeric(pvals[8, "Mean GT2"]), as.numeric(pvals[8, "Mean GT1"]), as.numeric(pvals[10, "Mean GT2"])) 
 genes1C <- cbind(genes1C, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
-genes1D <- rbind(as.numeric(pvals[13, "Mean GT2"]), as.numeric(pvals[13, "Mean GT1"]), as.numeric(pvals[15, "Mean GT2"])) / as.numeric(pvals[13, "Mean GT2"])
+genes1D <- rbind(as.numeric(pvals[13, "Mean GT2"]), as.numeric(pvals[13, "Mean GT1"]), as.numeric(pvals[15, "Mean GT2"])) 
 genes1D <- cbind(genes1D, c("Ces1D[B6_B6]", "Ces1D[x_BFMI]", "Ces1D[BFMI_B6]"))
-genes1E <- rbind(as.numeric(pvals[24, "Mean GT1"]), as.numeric(pvals[22, "Mean GT1"]), as.numeric(pvals[24, "Mean GT2"])) / as.numeric(pvals[24, "Mean GT1"])
+genes1E <- rbind(as.numeric(pvals[24, "Mean GT1"]), as.numeric(pvals[22, "Mean GT1"]), as.numeric(pvals[24, "Mean GT2"])) 
 genes1E <- cbind(genes1E, c("Ces1E[B6_B6]", "Ces1E[x_BFMI]", "Ces1E[BFMI_B6]"))
-genes1F <- rbind(as.numeric(pvals[25, "Mean GT2"]), as.numeric(pvals[25, "Mean GT1"]), as.numeric(pvals[29, "Mean GT2"])) / as.numeric(pvals[25, "Mean GT2"])
+genes1F <- rbind(as.numeric(pvals[25, "Mean GT2"]), as.numeric(pvals[25, "Mean GT1"]), as.numeric(pvals[29, "Mean GT2"])) 
 genes1F <- cbind(genes1F, c("Ces1F[B6_B6]", "Ces1F[x_BFMI]", "Ces1F[BFMI_B6]"))
 genes <- cbind(genesCAP, genes1B, genes1C, genes1D, genes1E, genes1F)
 
+STCAP <- rbind(as.numeric(pvals[35, "SD GT1"]), as.numeric(pvals[33, "SD GT1"]), as.numeric(pvals[33, "SD GT2"])) 
+STCAP <- cbind(STCAP, c("Capns2[B6_B6]", "Capns2[x_BFMI]", "Capns2[BFMI_B6]"))
+ST1B <- rbind(as.numeric(pvals[2,"SD GT2"]), as.numeric(pvals[2, "SD GT1"]), as.numeric(pvals[4, "SD GT2"])) 
+ST1B <- cbind(ST1B, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
+ST1C <- rbind(as.numeric(pvals[8, "SD GT2"]), as.numeric(pvals[8, "SD GT1"]), as.numeric(pvals[10, "SD GT2"])) 
+ST1C <- cbind(ST1C, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
+ST1D <- rbind(as.numeric(pvals[13, "SD GT2"]), as.numeric(pvals[13, "SD GT1"]), as.numeric(pvals[15, "SD GT2"])) 
+ST1D <- cbind(ST1D, c("Ces1D[B6_B6]", "Ces1D[x_BFMI]", "Ces1D[BFMI_B6]"))
+ST1E <- rbind(as.numeric(pvals[24, "SD GT1"]), as.numeric(pvals[22, "SD GT1"]), as.numeric(pvals[24, "SD GT2"])) 
+ST1E <- cbind(ST1E, c("Ces1E[B6_B6]", "Ces1E[x_BFMI]", "Ces1E[BFMI_B6]"))
+ST1F <- rbind(as.numeric(pvals[25, "SD GT2"]), as.numeric(pvals[25, "SD GT1"]), as.numeric(pvals[29, "SD GT2"])) 
+ST1F <- cbind(ST1F, c("Ces1F[B6_B6]", "Ces1F[x_BFMI]", "Ces1F[BFMI_B6]"))
+SDgenes <- cbind(STCAP, ST1B, ST1C, ST1D, ST1E, ST1F)
+
+colnames(SDgenes) <- c("Capns2", "Capns2geno", "Ces1b", "Ces1bgeno", "Ces1c", "Ces1cgeno", "Ces1d", "Ces1dgeno", "Ces1e", "Ces1egeno", "Ces1f", "Ces1fgeno")
 colnames(genes) <- c("meanCapns2", "Capns2geno", "meanCes1b", "Ces1bgeno", "meanCes1c", "Ces1cgeno", "meanCes1d", "Ces1dgeno", "meanCes1e", "Ces1egeno", "meanCes1f", "Ces1fgeno")
 mat <- cbind(as.numeric(genes[,1]), as.numeric(genes[,3]), as.numeric(genes[,5]), as.numeric(genes[,7]), as.numeric(genes[,9]), as.numeric(genes[,11]))
 
 # Ces genes
-x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces genes relative expression", ylab = "Relative gene expression", ylim = c(0, 2))
+x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces genes relative expression", ylab = "Relative gene expression", ylim = c(0, 8))
   axis(1, at = c(2.5, 6.5, 10.5, 14.5, 18.5), c("Ces1b", "Ces1c", "Ces1d", "Ces1e", "Ces1f"))
   y <- 1.7
   # set an offset for tick lengths
@@ -183,12 +198,22 @@ x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "
   # draw asterics
   text(3,y+offset,"**")
   text(2.5,y+offset + offset + offset,"**")
+  segments(x[,1], mat[,2] - as.numeric(SDgenes[,3]), x[,1], mat[,2] + as.numeric(SDgenes[,3]), lwd = 1.5)
+  arrows(x[,1], mat[,2] - as.numeric(SDgenes[,3]), x[,1], mat[,2] + as.numeric(SDgenes[,3]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
+  segments(x[,2], mat[,3] - as.numeric(SDgenes[,5]), x[,2], mat[,3] + as.numeric(SDgenes[,5]), lwd = 1.5)
+  arrows(x[,2], mat[,3] - as.numeric(SDgenes[,5]), x[,2], mat[,3] + as.numeric(SDgenes[,5]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
+  segments(x[,3], mat[,4] - as.numeric(SDgenes[,7]), x[,3], mat[,4] + as.numeric(SDgenes[,7]), lwd = 1.5)
+  arrows(x[,3], mat[,4] - as.numeric(SDgenes[,7]), x[,3], mat[,4] + as.numeric(SDgenes[,7]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
+  segments(x[,4], mat[,5] - as.numeric(SDgenes[,9]), x[,4], mat[,5] + as.numeric(SDgenes[,9]), lwd = 1.5)
+  arrows(x[,4], mat[,5] - as.numeric(SDgenes[,9]), x[,4], mat[,5] + as.numeric(SDgenes[,9]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
+  segments(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5)
+  arrows(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
   legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
   
 # Capns2
-x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = "Relative gene expression", ylim = c(0, 600))
+x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = "Relative gene expression", ylim = c(0, 1000))
   axis(1, at = 1.9, "Capns2")
-  y <- 400
+  y <- 800
   # set an offset for tick lengths
   offset <- 20
   # draw first horizontal line
@@ -197,8 +222,6 @@ x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "C
   # draw asterics
   text(2.5,y+offset,"**")
   text(1.9,y+offset + offset + offset,"**")
-  segments(barCenters, myData$mean - myData$se * 2, barCenters, myData$mean + myData$se * 2, lwd = 1.5)
-
-  arrows(barCenters, myData$mean - myData$se * 2, barCenters, myData$mean + myData$se * 2, lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  
+  segments(x, mat[,1] - as.numeric(SDgenes[,1]), x, mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5)
+  arrows(x, mat[,1] - as.numeric(SDgenes[,1]), x, mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
   legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
