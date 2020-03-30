@@ -151,10 +151,30 @@ genes1B <- rbind(as.numeric(pvals[5,"Mean GT1"]), as.numeric(pvals[4, "Mean GT1"
 genes1B <- cbind(genes1B, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
 genes1C <- rbind(as.numeric(pvals[8, "Mean GT2"]), as.numeric(pvals[8, "Mean GT1"]), as.numeric(pvals[10, "Mean GT2"]))
 genes1C <- cbind(genes1C, c("Ces1b[B6_B6]", "Ces1b[x_BFMI]", "Ces1b[BFMI_B6]"))
-genes <- cbind(genesCAP, genes1B, genes1C)
-colnames(genes) <- c("meanCapns2", "Capns2geno", "meanCes1b", "Ces1bgeno", "meanCes1c", "Ces1cgeno")
-mat <- cbind(as.numeric(genes[,1]), as.numeric(genes[,3]), as.numeric(genes[,5]))
+genes1D <- rbind(as.numeric(pvals[13, "Mean GT2"]), as.numeric(pvals[13, "Mean GT1"]), as.numeric(pvals[15, "Mean GT2"]))
+genes1D <- cbind(genes1D, c("Ces1D[B6_B6]", "Ces1D[x_BFMI]", "Ces1D[BFMI_B6]"))
+genes1E <- rbind(as.numeric(pvals[24, "Mean GT1"]), as.numeric(pvals[22, "Mean GT1"]), as.numeric(pvals[24, "Mean GT2"]))
+genes1E <- cbind(genes1E, c("Ces1E[B6_B6]", "Ces1E[x_BFMI]", "Ces1E[BFMI_B6]"))
+genes1F <- rbind(as.numeric(pvals[25, "Mean GT2"]), as.numeric(pvals[25, "Mean GT1"]), as.numeric(pvals[29, "Mean GT2"]))
+genes1F <- cbind(genes1F, c("Ces1F[B6_B6]", "Ces1F[x_BFMI]", "Ces1F[BFMI_B6]"))
+genes <- cbind(genesCAP, genes1B, genes1C, genes1D, genes1E, genes1F)
 
-barplot(mat,beside=TRUE,col=1:3, main = "qPCR results", ylab = "Relative gene expression")
-axis(1, at = c(2.5,6.5, 10.5), c("Capns2", "Ces1b", "Ces1c"))
-legend("topright", legend=c("B6_B6", "x_BFMI", "BFMI_B6"), fill=1:3)
+colnames(genes) <- c("meanCapns2", "Capns2geno", "meanCes1b", "Ces1bgeno", "meanCes1c", "Ces1cgeno", "meanCes1d", "Ces1dgeno", "meanCes1e", "Ces1egeno", "meanCes1f", "Ces1fgeno")
+mat <- cbind(as.numeric(genes[,1]), as.numeric(genes[,3]), as.numeric(genes[,5]), as.numeric(genes[,7]), as.numeric(genes[,9]), as.numeric(genes[,11]))
+
+x <- barplot(mat,beside=TRUE,col=1:3, main = "qPCR results", ylab = "Relative gene expression", ylim = c(0, 7.2))
+  axis(1, at = c(2.5, 6.5, 10.5, 14.5, 18.5, 22.5), c("Capns2", "Ces1b", "Ces1c", "Ces1d", "Ces1e", "Ces1f"))
+  y <- 6.5
+  # set an offset for tick lengths
+  offset <- 0.2
+  # draw first horizontal line
+  lines(x[2:3],c(y, y))
+  lines(x[1:3],c(y + offset + offset, y + offset + offset, y + offset + offset))
+  lines(x[4:6],c(y + offset + offset, y + offset + offset, y + offset + offset))
+  lines(x[5:6],c(y, y))
+  # draw asterics
+  text(3,y+offset,"**")
+  text(2.5,y+offset + offset + offset,"**")
+  text(x[5], y+offset + offset + offset,"**")
+  text(7,y+offset,"**")
+  legend("topright", legend=c("B6_B6", "x_BFMI", "BFMI_B6"), fill=1:3)
