@@ -122,8 +122,8 @@ for(g in genes){
   rsp <- mean(dCTlist$B6_B6[,2], na.rm = TRUE)
   dCTlist$B6_B6[,1] <- dCTlist$B6_B6[,1] / act
   dCTlist$B6_B6[,2] <- dCTlist$B6_B6[,2] / rsp
-  dCTlist$x_BFMI[,1] <- dCTlist$x_BFMI[,1] / act
-  dCTlist$x_BFMI[,2] <- dCTlist$x_BFMI[,2] / rsp
+  dCTlist$X_BFMI[,1] <- dCTlist$X_BFMI[,1] / act
+  dCTlist$X_BFMI[,2] <- dCTlist$X_BFMI[,2] / rsp
   dCTlist$BFMI_B6[,1] <- dCTlist$BFMI_B6[,1] / act
   dCTlist$BFMI_B6[,2] <- dCTlist$BFMI_B6[,2] / rsp
   for(gtA in c("X_BFMI", "B6_B6")){
