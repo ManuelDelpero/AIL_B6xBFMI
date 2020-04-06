@@ -52,7 +52,7 @@ G3 <- rownames(BFMI_C8[2:9,]) # 8 from BFMI_C8, from 2 since #1 is an outlier
 days <- colnames(phenotypes)[7:24]
 numdays <- as.numeric(gsub("d", "", days))
 
-pdf("GrowthCurves_Selected")
+#pdf("GrowthCurves_Selected")
 ### Create the plot
 plot(x = c(min(numdays), max(numdays)), y = c(10, 55), t = 'n', ylab="Bodyweight [g]", xlab="Time [days]")
 for(i in G1){
@@ -70,17 +70,47 @@ for(i in G3){
 legend("topleft", c("B6 B6", "BFMI B6", "??? BFMI", "jObes1[b6]", "jObes1[BFMI]"), 
                   col=c("red", "blue", "orange", "black", "black"), lwd=c(1,1,1,NA,NA), pch =c(NA,NA,NA, 16, 17))
 				
-dev.off()
+#dev.off()
 
-pdf("GroupsRTqPCR_before.pdf")
-boxplot(main="Groups for RTqPCR (before)", as.numeric(BFMI_BFMI[,3]), as.numeric(BFMI_B6[,3]) , as.numeric(B6_BFMI[,3]), as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Triglycerides/Proteins", col=c("darkolivegreen", "darkolivegreen1", "darkolivegreen2", "darkolivegreen3") , las = 2)
-  axis(1, at = 1:4 , c("BFMI/BFMI", "BFMI/B6", "B6/BFMI", "B6/B6"))
-dev.off() 
+#pdf("GroupsRTqPCR_before.pdf")
+par(cex.lab=1.2, cex.main = 1.2, cex.axis = 0.7)
+par(mfrow = c(1,2))
+x <- boxplot(main="Groups for gene expression analysis (before T-Test)", as.numeric(BFMI_BFMI[,3]), as.numeric(BFMI_B6[,3]) , as.numeric(B6_BFMI[,3][-1]), as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Liver triglycerides/protein [µg/µg]", col=c("gray20", "gray50", "gray70", "gray88") , las = 2, ylim = c(0, 450))
+  axis(1, at = 1:4 , c("BFMI Chr3/BFMI Chr 8 ", "BFMI Chr3/B6 Chr 8 ", "B6 Chr3/BFMI Chr 8 ", "B6 Chr3/B6 Chr 8"))
+  y <- 430
+  x <- 410
+  z <- 370
+  a <- 350
+  # set an offset for tick lengths
+  offset <- 10
+  # draw first horizontal line
+  lines(c(1,2), c(y, y))
+  lines(c(1:4),c(y + offset + offset, y + offset + offset, y + offset + offset, y + offset + offset))
+  lines(c(2:3),c(x, x))
+  lines(c(2:4), c(x - offset - offset, x - offset- offset, x - offset- offset))
+  lines(c(3:4),c(z, z))
+  lines(c(1:3),c(a, a, a))
+  # draw asterics
+  text(1.5, y+5,"*")
+  text(2.5, y+25,"*")
+  text(2, a+10,"n.s.", cex = 0.7)
+  text(2.5, x+5,"*")
+  text(3, 395,"*")
+  text(3.5, z+5,"*")
+#dev.off() 
 
-BFMIB6_BFMI <- c(as.numeric(BFMI_BFMI[,3]) , as.numeric(B6_BFMI[,3]))
+BFMIB6_BFMI <- c(as.numeric(BFMI_BFMI[,3]) , as.numeric(B6_BFMI[,3][-1]))
 
-pdf("GroupsRTqPCR_after.pdf")
-boxplot(main="Groups for RTqPCR (after)", BFMIB6_BFMI, as.numeric(BFMI_B6[,3]) , as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Triglycerides/Proteins",  col=c("darkolivegreen", "darkolivegreen1", "darkolivegreen3"), las = 2)
-  axis(1, at = 1:3 , c("BFMI_B6/BFMI", "BFMI/B6", "B6/B6"))
-
-dev.off()
+#pdf("GroupsRTqPCR_after.pdf")
+boxplot(main="Groups for gene expression analysis (after T-Test)", BFMIB6_BFMI, as.numeric(BFMI_B6[,3]) , as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Liver triglycerides/protein [µg/µg]",  col=c("gray20", "gray50", "gray88"), las = 2, ylim = c(0, 450))
+  axis(1, at = 1:3 , c("BFMI~B6 Chr3/BFMI Chr 8", "BFMI Chr3/B6 Chr 8", "B6 Chr3/B6 Chr 8"))
+  y <- 430
+  x <- 410
+  z <- 390
+  lines(c(1,2), c(y, y))
+  lines(c(1,3), c(x, x))
+  lines(c(2,3), c(z, z))
+  text(1.5, y+5,"*")
+  text(2, x+5,"*")
+  text(2.5, z+5,"*")
+#dev.off()
