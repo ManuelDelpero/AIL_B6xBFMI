@@ -190,9 +190,9 @@ mat <- cbind(as.numeric(genes[,1]), as.numeric(genes[,3]), as.numeric(genes[,5])
 par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.4)
 par(mfrow = c(1,2))
 
-x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces genes relative expression", ylab = "Relative gene expression", ylim = c(0, 200))
+x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces1 genes relative expression", ylab = "Relative expression [2ˆ(-AACT)]", ylim = c(0, 5))
   axis(1, at = c(2.5, 6.5, 10.5, 14.5, 18.5), c("Ces1b", "Ces1c", "Ces1d", "Ces1e", "Ces1f"))
-  y <- 5
+  y <- 3
   # set an offset for tick lengths
   offset <- 0.1
   # draw first horizontal line
@@ -214,7 +214,7 @@ x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "
   legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
   
 # Capns2
-x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = "Relative gene expression", ylim = c(0, 1000))
+x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = "Relative expression [2ˆ(-AACT)]", ylim = c(0, 1000))
   axis(1, at = 1.9, "Capns2")
   y <- 650
   # set an offset for tick lengths
@@ -263,3 +263,17 @@ x = gap.barplot(matt, main = "Gene expression",
   segments(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5)
   arrows(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
   legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
+  
+if (x == 0) {  
+mdata <- cbind(mdata, t(genotypes[,mdata[, "Sample.Name"]]))
+B6_B6 <- which(mdata[, topmarkerChr3] != "AA" & mdata[, topmarkerChr8] != "AA")
+BFMI_B6 <- which(mdata[, topmarkerChr3] == "AA" & mdata[, topmarkerChr8] != "AA")
+BFMI_BFMI <- which(mdata[, topmarkerChr8] == "AA"  & mdata[, topmarkerChr8] == "AA")
+B6_BFMI <- which(mdata[, topmarkerChr8] != "AA"  & mdata[, topmarkerChr8] == "AA")
+
+mdata <- cbind(mdata, GT = NA)
+mdata[B6_B6, "GT"] <- "B6_B6"
+mdata[BFMI_B6, "GT"] <- "BFMI_B6"
+mdata[BFMI_BFMI, "GT"] <- "BFMI_BFMI"
+mdata[B6_BFMI, "GT"] <- "B6_BFMI"
+}
