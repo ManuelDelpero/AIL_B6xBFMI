@@ -202,7 +202,7 @@ topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
 genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
 colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides [SNP S1H083826428]", xlab = "Genotype", ylab = "Relative triglycerides [%]", col = c("gray88", "gray50", "gray20"), las =2, xaxt = "n")
+bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides [SNP S1H083826428]", xlab = "Genotype", ylab = "[µg/µg]", col = c("gray88", "gray50", "gray20"), las =2, xaxt = "n")
   axis(1, at = 1:3 , c("AA", "AG", "GG"))
   legend("topleft", 
   legend = c("BFMI", "HET", "B6"), 
