@@ -29,7 +29,6 @@ write.table(genotypes, "OrderedGenotypes.txt", sep = "\t", quote=FALSE)
 
 library(lme4)
 ctrl = lmerControl(optimizer ="Nelder_Mead", optCtrl=list(maxfun=20000))
-
 # Covariates we need to include in the model / tested previously
 individual <- c()
 timepoint <- c()
