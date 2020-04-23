@@ -90,24 +90,19 @@ signmatrix.adj <- lodmatrix.adj[which(apply(lodmatrix.adj, 1, function(x){ any(x
 signannotmatrix.adj <- cbind(annotation[rownames(signmatrix.adj), ], signmatrix.adj)
 write.table(signannotmatrix.adj, "signannotmatrix.adj.txt", sep = "\t", quote=FALSE)
 
-# Analysis on the Top markers
-# read the normal genotypes (non numeric)
-genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
+getVarianceExplained <- function(genotypes, phenotypes, pheno.col = "d77", marker = "gUNC5036315"){
+  genotype <- as.factor(t(genotypes[marker,]))
+  littersize <- as.factor(phenotypes[, "WG"])
+  subfamily <- as.factor(phenotypes[, "Mutter"])
+  sex <- as.factor(phenotypes[, "Sex"])
+  phenotype <- phenotypes[, pheno.col]
+  model <- lm(phenotype ~ subfamily + littersize + sex + genotype)
+  tryCatch(res  <- anova(model), error = function(e){ res <<- NA })
+  cat(names(model$coefficients),"\n")
+  cat(model$coefficients,"\n")
+  varExplained  <- res[, "Sum Sq"] / sum((phenotype - mean(phenotype, na.rm=TRUE))^2, na.rm=TRUE)
+  names(varExplained) <- c("subfamily","littersize","sex", "marker")
+  return(round(varExplained * 100, digits=1))
+}
 
-# Triglycerides TOP marker
-topmarker <- t(genotypes["S1H083826428",])
-genophenoT <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
-colnames(genophenoT) <- c("Genotype", "Triglycerides/Proteins")
-boxplot(as.numeric(as.character(genophenoT[, "Triglycerides/Proteins"]))  ~ genophenoT[,"Genotype"], main = "Liver triglycerides", xlab = "Genotype", ylab = "Triglycerides/Proteins", col = (c("gold" , "darkgreen" , "lightblue")))
-
-# Body weight TOP marker
-topmarker <- t(genotypes["gUNC5046545",])
-genophenoWeight <- cbind(topmarker, phenotypes[,"d98"])
-colnames(genophenoWeight) <- c("Genotype", "d98")
-boxplot(as.numeric(as.character(genophenoWeight[, "d98"]))  ~ genophenoWeight[,"Genotype"],  main = "Body weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen" , "lightblue")))
-
-# Quadriceps weight TOP marker
-topmarker <- t(genotypes["SAH033394051",])
-genophenoQuadri <- cbind(topmarker, phenotypes[,"Quadri"])
-colnames(genophenoQuadri) <- c("Genotype", "Quadri")
-boxplot(as.numeric(as.character(genophenoQuadri[, "Quadri"]))  ~ genophenoQuadri[,"Genotype"],  main = "Quadriceps weight" , xlab = "Genotype", ylab = "Weight (grams)", col = (c("gold" , "darkgreen")))
+getVarianceExplained(genotypes, phenotypes, pheno.col = "Triglycerides/Proteins", marker = "S1H083826428") # 50 % of the variation explained by the QTL on chr 8!!
