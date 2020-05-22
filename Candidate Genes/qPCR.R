@@ -187,14 +187,15 @@ colnames(genes) <- c("meanCapns2", "Capns2geno", "meanCes1b", "Ces1bgeno", "mean
 mat <- cbind(as.numeric(genes[,1]), as.numeric(genes[,3]), as.numeric(genes[,5]), as.numeric(genes[,7]), as.numeric(genes[,9]), as.numeric(genes[,11]))
 
 # Ces genes
-par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.4)
-par(mfrow = c(1,2))
+par(cex.lab=1.2, cex.main = 1.8, cex.axis = 1.4)
+par(mfrow = c(2,2))
+#par(mfrow = c(1,2))
 
-x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces1 genes relative expression", ylab = "Relative expression [2ˆ(-AACT)]", ylim = c(0, 5))
+x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Ces1 genes relative expression", ylab = expression(paste("Relative expression [2ˆ(- ",Delta,"CT)]")), ylim = c(0, 7))
   axis(1, at = c(2.5, 6.5, 10.5, 14.5, 18.5), c("Ces1b", "Ces1c", "Ces1d", "Ces1e", "Ces1f"))
   y <- 3
   # set an offset for tick lengths
-  offset <- 0.1
+  offset <- 0.2
   # draw first horizontal line
   lines(x[2:3],c(y, y))
   lines(x[1:3],c(y + offset + offset, y + offset + offset, y + offset + offset))
@@ -211,14 +212,14 @@ x <- barplot(mat[,-1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "
   arrows(x[,4], mat[,5] - as.numeric(SDgenes[,9]), x[,4], mat[,5] + as.numeric(SDgenes[,9]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
   segments(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5)
   arrows(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
+  legend("topright", legend=c("B6 Chr3/B6 Chr8", "B6~BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
   
 # Capns2
-x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = "Relative expression [2ˆ(-AACT)]", ylim = c(0, 1000))
+x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "Capns2 relative expression", ylab = expression(paste("Relative expression [2ˆ(- ",Delta,"CT)]")), ylim = c(0, 1400))
   axis(1, at = 1.9, "Capns2")
   y <- 650
   # set an offset for tick lengths
-  offset <- 20
+  offset <- 35
   # draw first horizontal line
   lines(x[2:3],c(y, y))
   lines(x[1:3],c(y + offset + offset, y + offset + offset, y + offset + offset))
@@ -227,43 +228,8 @@ x <- barplot(mat[,1],beside=TRUE,col= c("gray20", "gray50", "gray88"), main = "C
   text(1.9,y+offset + offset + offset,"**")
   segments(x, mat[,1] - as.numeric(SDgenes[,1]), x, mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5)
   arrows(x, mat[,1] - as.numeric(SDgenes[,1]), x, mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
-  
-  
-# with breaks
-matt <- rbind(NA, mat)
-x = gap.barplot(matt, main = "Gene expression",
-                gap=c(12,395), ytics=c(0,5,10,390,395,400,405,410), col=rep(c("white", "gray20", "gray50", "gray88"), 6),
-                xaxt='n', ylim = c(0,30)) 
-  axis(1, at = c(3, 7, 11, 15, 19, 23), c("Capns2", "Ces1b", "Ces1c", "Ces1d", "Ces1e", "Ces1f"))
-  y <- 5
-  xx <- 24
-  # set an offset for tick lengths
-  offset <- 0.5
-  # draw first horizontal line
-  lines(x[3:4],c(xx, xx))
-  lines(x[2:4],c(xx + offset + offset, xx + offset + offset, xx + offset+ offset))
-  lines(x[7:8],c(y, y))
-  lines(x[6:8],c(y + offset+ offset, y + offset + offset, y + offset + offset))
-  # draw asterics
-  text(3.5,xx+offset,"**")
-  text(3,xx+ offset + offset + offset  , "**")
-  text(7.5,y+offset,"**")
-  text(7,y+ offset + offset + offset, "**")
-  segments(x[2:4], mat[,1] - as.numeric(SDgenes[,1]), x[2:4], mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5)
-  arrows(x[2:4], mat[,1] - as.numeric(SDgenes[,1]), x[2:4], mat[,1] + as.numeric(SDgenes[,1]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  segments(x[6:8], mat[,2] - as.numeric(SDgenes[,3]), x[6:8], mat[,2] + as.numeric(SDgenes[,3]), lwd = 1.5)
-  arrows(x[6:8], mat[,2] - as.numeric(SDgenes[,3]), x[6:8], mat[,2] + as.numeric(SDgenes[,3]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  segments(x[,2], mat[,3] - as.numeric(SDgenes[,5]), x[,2], mat[,3] + as.numeric(SDgenes[,5]), lwd = 1.5)
-  arrows(x[,2], mat[,3] - as.numeric(SDgenes[,5]), x[,2], mat[,3] + as.numeric(SDgenes[,5]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  segments(x[,3], mat[,4] - as.numeric(SDgenes[,7]), x[,3], mat[,4] + as.numeric(SDgenes[,7]), lwd = 1.5)
-  arrows(x[,3], mat[,4] - as.numeric(SDgenes[,7]), x[,3], mat[,4] + as.numeric(SDgenes[,7]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  segments(x[,4], mat[,5] - as.numeric(SDgenes[,9]), x[,4], mat[,5] + as.numeric(SDgenes[,9]), lwd = 1.5)
-  arrows(x[,4], mat[,5] - as.numeric(SDgenes[,9]), x[,4], mat[,5] + as.numeric(SDgenes[,9]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  segments(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5)
-  arrows(x[,5], mat[,6] - as.numeric(SDgenes[,11]), x[,5], mat[,6] + as.numeric(SDgenes[,11]), lwd = 1.5, angle = 90, code = 3, length = 0.05)
-  legend("topright", legend=c("B6 Ch3/B6 Chr 8", "B6 or BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
-  
+  legend("topright", legend=c("B6 Chr3/B6 Chr8", "B6~BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"), fill= c("gray20", "gray50", "gray88"), bty = "n")
+    
 if (x == 0) {  
 mdata <- cbind(mdata, t(genotypes[,mdata[, "Sample.Name"]]))
 B6_B6 <- which(mdata[, topmarkerChr3] != "AA" & mdata[, topmarkerChr8] != "AA")
