@@ -34,16 +34,17 @@ chr3 <- dataset[which(dataset[,"Chromosome"] == 3),]
 signMarkers <- dataset[which(dataset[,"d98"] > 4.5),]
 
 par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.6)
-mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
-layout(mat, widths = rep.int(3, ncol(mat)))
+par(mfrow = c(1,2))
+#mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
+#layout(mat, widths = rep.int(3, ncol(mat)))
 # lodcurve plots for each time point
 plot(main = "QTL profile body mass [Chr 3]", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10 [pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="gray0", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="gray88", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d105"] , type = "l", col="gray35", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d98"] , type = "l", col="gray60", lwd = 1)
-  abline(h=4.5, col="gray0")
-  abline(h=4, col="gray60")
+  abline(h=5.2, col="gray0")
+  abline(h=4.4, col="gray60")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0", "25", "50", "75", "100", "125", "150"))
   legend("topright",
   legend = c("Week 9", "Week 14", "Week 15","Week 20"),
@@ -193,8 +194,8 @@ chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
 plot(main = "QTL profile liver triglycerides [Chr 8]", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10[pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="gray0", lwd = 1)
-  abline(h=4.5, col="gray0")
-  abline(h=4, col="gray88")
+  abline(h=5.1, col="gray0")
+  abline(h=4.4, col="gray88")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0", "25", "50", "75", "100", "125", "150"))
 
 topmarkerID <- rownames(dataset[which.max(dataset[,"Triglycerides/Proteins"]),])
@@ -218,8 +219,8 @@ chr1 <- dataset[which(dataset[,"Chromosome"] == 1),]
 
 plot(main = "QTL profile liver weight [Chr 1]", c(min(as.numeric(chr1[, "Position"])), max(as.numeric(chr1[, "Position"]))), c(0,7), ylab = "-log10[pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr1[,"Position"]), y = chr1[,"LiverWeight"] , type = "l", col="gray0", lwd = 1)
-  abline(h=4.5, col="gray0")
-  abline(h=4, col="gray88")
+  abline(h=5.1, col="gray0")
+  abline(h=4.4, col="gray88")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000, 175000000, 200000000), c("0", "25", "50", "75", "100", "125", "150", "175", "200"))
 
 mmodelLiver <- lm(phenotypes[,"Leber"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
@@ -231,7 +232,7 @@ groupsSize <- apply(genotypes,1, table)[[topmarkerID]]
 genopheno <- cbind(topmarker, liver.adj)
 colnames(genopheno) <- c("Genotype", "LiverWeight")
 bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), main = "Liver weight [SNP gUNC2036998]", xlab = "Genotype", ylab = "[g]", col = c("gray50", "gray20", "gray88"), las = 2, xaxt = "n")
-  axis(1, at = 1:2 , c("GG", "AG"))
+  axis(1, at = 1:2 , c("AG", "GG"))
   legend("topleft",
   legend = c("BFMI", "HET"), 
     col = c("gray20", "gray50"),
