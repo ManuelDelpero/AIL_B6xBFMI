@@ -76,7 +76,7 @@ meanHET
 
 # Liver weight
 data <- lodannotmatrix[, c("Chromosome", "Position", "Leber")]
-chr8 <- data[which(Trig[,"Chromosome"] == 1),]
+chr8 <- data[which(data[,"Chromosome"] == 1),]
 topmarkerID <- rownames(data[which.max(data[,"Leber"]),])
 topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
@@ -85,6 +85,51 @@ colnames(genopheno) <- c("Genotype", "Leber")
 meanBFMI <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AA"), 2]), na.rm = TRUE)
 meanB6 <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "GG"), 2]), na.rm = TRUE)
 meanHET <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AG"), 2]), na.rm = TRUE)
+meanBFMI
+meanB6
+meanHET
+
+# Sub fat weight
+data <- lodannotmatrix[, c("Chromosome", "Position", "WATsc")]
+chr8 <- data[which(data[,"Chromosome"] == 1),]
+topmarkerID <- rownames(data[which.max(data[,"WATsc"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"WATsc"])
+colnames(genopheno) <- c("Genotype", "WATsc")
+meanBFMI <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AA"), 2]), na.rm = TRUE)
+meanB6 <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "GG"), 2]), na.rm = TRUE)
+meanHET <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AG"), 2]), na.rm = TRUE)
+meanBFMI
+meanB6
+meanHET
+
+# Glucose
+data <- lodannotmatrix[, c("Chromosome", "Position", "ITT_15")]
+chr8 <- data[which(data[,"Chromosome"] == 1),]
+topmarkerID <- rownames(data[which.max(data[,"ITT_15"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"ITT_15"])
+colnames(genopheno) <- c("Genotype", "ITT_15")
+meanBFMI <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AA"), 2]), na.rm = TRUE)
+meanB6 <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "GG"), 2]), na.rm = TRUE)
+meanHET <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "AG"), 2]), na.rm = TRUE)
+meanBFMI
+meanB6
+meanHET
+
+# BMI
+data <- lodannotmatrix[, c("Chromosome", "Position", "BMI")]
+chr8 <- data[which(data[,"Chromosome"] == 1),]
+topmarkerID <- rownames(data[which.max(data[,"BMI"]),])
+topmarker <- t(genotypes[topmarkerID,])
+groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
+genopheno <- cbind(topmarker, phenotypes[,"BMI"])
+colnames(genopheno) <- c("Genotype", "BMI")
+meanBFMI <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "TT"), 2]), na.rm = TRUE)
+meanB6 <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "CC"), 2]), na.rm = TRUE)
+meanHET <- mean(as.numeric(genopheno[which(genopheno[, "Genotype"] == "TC"), 2]), na.rm = TRUE)
 meanBFMI
 meanB6
 meanHET
