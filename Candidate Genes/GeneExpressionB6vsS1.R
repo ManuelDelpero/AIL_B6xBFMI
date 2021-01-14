@@ -64,8 +64,6 @@ heatmap(corM) 				# one outlier in S1 liver samples
 
 colnames(expressionS1B6L) <- c("S1-7247L", "S1-7248L", "S1-7249L", "S1-7298L", "S1-7299L", "S1-7304L", "S1-7305L", "1-B6L","2-B6L", "3-B6L", "4-B6L", "5-B6L", "6-B6L", "7-B6L", "8-B6L")
 
-
-# Diff expression analysis
 # Diff. gene expression analysis
 getSignificant <- function(expressions, Tissue = "L", adjust = "BH", p.val = 0.05){
   S1P <- which(grepl("S1", colnames(expressions)) & grepl(Tissue, colnames(expressions)))
