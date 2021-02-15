@@ -66,8 +66,6 @@ colnames(ExpressionsS1B6L) <- c("S1-7247L", "S1-7248L", "S1-7249L", "S1-7298L", 
 corM <- cor(ExpressionsS1B6L)
 heatmap(corM) 		
 
-
-# Diff expression analysis
 # Diff. gene expression analysis
 getSignificant <- function(expressions, Tissue = "L", adjust = "BH", p.val = 0.05){
   S1P <- which(grepl("S1", colnames(expressions)) & grepl(Tissue, colnames(expressions)))
