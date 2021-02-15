@@ -56,13 +56,15 @@ corM <- cor(expressions)
 expressionsLB6 <- expressions
 
 # Combine the two datasets 
-ExpressionsS1B6L <- cbind(expressionsLS1, expressionsLB6[,c(1:8)])
+ExpressionsS1B6L <- cbind(expressionsLS1[,c(1:7)], expressionsLB6[,c(1:8)])
 
 # Some quality check
 corM <- cor(ExpressionsS1B6L)
 heatmap(corM) 				# one outlier in S1 liver samples
 
-colnames(expressionS1B6L) <- c("S1-7247L", "S1-7248L", "S1-7249L", "S1-7298L", "S1-7299L", "S1-7304L", "S1-7305L", "1-B6L","2-B6L", "3-B6L", "4-B6L", "5-B6L", "6-B6L", "7-B6L", "8-B6L")
+colnames(ExpressionsS1B6L) <- c("S1-7247L", "S1-7248L", "S1-7249L", "S1-7298L", "S1-7299L", "S1-7304L", "S1-7305L", "1-B6L","2-B6L", "3-B6L", "4-B6L", "5-B6L", "6-B6L", "7-B6L", "8-B6L")
+corM <- cor(ExpressionsS1B6L)
+heatmap(corM) 		
 
 
 # Diff expression analysis
@@ -95,4 +97,4 @@ annotate <- function(significant){
   return(annotated)
 }
 
-liverExpression <- annotate(getSignificant(expressionS1B6L, "L", p.val = 0.05)) 		# Bbs7 is downregulated in S1
+liverExpression <- annotate(getSignificant(expressionS1B6L, "L", p.val = 0.05)) 		# Bbs7 is downregulated in S1 
