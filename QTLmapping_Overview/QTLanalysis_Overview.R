@@ -1,8 +1,13 @@
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
+# for QTL mapping with forward and backward model selection
+#
+# copyright (c) 2018-2021 - Brockmann group - HU Berlin Manuel Delpero & Danny Arends
+# 
+# first written november, 2019
 
 #genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 genotypes <- read.csv("genomatrix.clean_numeric.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
-phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
+phenotypes <- read.csv("PhenotypesComplete.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
 markerannot <- markerannot[,-1]
 markerannot <- markerannot[rownames(genotypes),]
@@ -22,7 +27,7 @@ phenonames <- colnames(phenotypes)[-c(1:5)]
 genotypes <- genotypes[rownames(annotation), rownames(phenotypes)]
 write.table(genotypes, "OrderedGenotypes.txt", sep = "\t", quote=FALSE)
 
-# Covariates we could/need to include in the model, we test them on their pvalue
+# Covariates we could/need to include in the model, we test them on their pvalue, if significant they are added into the model, forward covariate selection
 sex <- phenotypes[, "Sex"]
 wg <- phenotypes[, "WG"]
 mother <- phenotypes[, "Mutter"]
@@ -58,7 +63,54 @@ for (pname in  phenonames){   #phenonames) {
 }
 
 # QQplots
-for (pname in "Triglycerides/Proteins"){   #phenonames) {
+for (pname in "Plasma_Triglycerides"){   #phenonames) {
+  pvals.exp <- (rank(pmatrix[,pname], ties.method="first")+0.5) / (length(pmatrix[,pname]) + 1)
+  plot(-log10(pvals.exp), -log10(pmatrix[,pname]))
+  abline(a=0, b=1)
+}
+
+# Backward covariate selection to include only the covariates that actually improve the model according to the QQplots,
+# and that still have a significant influence when tested in the full model
+
+#phenonames <- c("WATgon", "Leber", "WATsc", "Plasma_Trigylcerides", "Plasma_Cholesterol")
+anova(lm(phenotypes[,"WATgon"] ~ phenotypes[,"Sex"] + phenotypes[,"WG"] )) # exclude WG
+mmodelWATgon <- lm(phenotypes[,"WATgon"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
+mmodelWATsc <- lm(phenotypes[,"WATsc"] ~ phenotypes[,"Mutter"])
+mmodelLeber <- lm(phenotypes[,"Leber"] ~ phenotypes[,"Sex"] + phenotypes[,"Mutter"])
+mmodelPlasmaTrig <- lm(phenotypes[,"Plasma_Triglycerides"] ~ phenotypes[,"Sex"])
+anova(lm(phenotypes[,"Plasma_Cholesterol"] ~ phenotypes[,"Sex"] +  phenotypes[,"Mutter"])) # try to exclude the mother and perform lambda correction
+
+pmatrix <- matrix(NA, nrow(genotypes), length(phenonames), dimnames= list(rownames(genotypes), phenonames))
+for (pname in phenonames){
+  pheno <- phenotypes[, pname]
+  p.sex <- anova(lm(pheno ~ sex))["Pr(>F)"]["sex",]
+  p.mother <- anova(lm(pheno ~ mother))["Pr(>F)"]["mother",]
+  p.wg <- anova(lm(pheno ~ wg))["Pr(>F)"]["wg",]
+  myfactors <- c()
+  if(p.sex < 0.05) myfactors <- c(myfactors, "sex")
+  if((p.mother < 0.05) && (pname != "ITTauc") && (pname != "WATgon")) myfactors <- c(myfactors, "mother")
+  if((p.wg < 0.05) && (pname != "WATgon")) myfactors <- c(myfactors, "wg")
+  myformula <- paste0("pheno ~ ", paste(c(myfactors, "geno"), collapse = " + "))
+  cat(pname, " ", myformula, "\n")
+  
+  pvalues <- apply(genotypes, 1, function(geno, pheno, sex, wg, mother, myformula) {
+    mmodel <- lm(formula(myformula))
+    return(anova(mmodel)["Pr(>F)"]["geno",])
+  }, pheno = phenotypes[,pname], sex = sex, wg = wg, mother = mother, myformula = myformula)
+  pmatrix[names(pvalues), pname] <- pvalues
+}
+lodmatrix <- -log10(pmatrix)
+
+# Have a look at the results with the new models
+# Manhattan plots
+for (pname in  "ITTauc"){   #phenonames) {
+  plot(lodmatrix[,pname], main = pname, col = as.numeric(as.factor(annotation[,"Chromosome"])))
+  abline(h = -log10(0.05 / nrow(lodmatrix)), col="orange")
+  abline(h = -log10(0.01 / nrow(lodmatrix)), col="green")
+}
+
+# QQplots
+for (pname in "ITTauc"){   #phenonames) {
   pvals.exp <- (rank(pmatrix[,pname], ties.method="first")+0.5) / (length(pmatrix[,pname]) + 1)
   plot(-log10(pvals.exp), -log10(pmatrix[,pname]))
   abline(a=0, b=1)
@@ -79,6 +131,7 @@ for (pheno in colnames(pvalues.adj)){
     }else{ p.adj <- pmatrix[,pheno] }
       pvalues.adj[names(p.adj), pheno] <- p.adj
 }
+lodmatrix.adj <- -log10(pvalues.adj)
 
 # additional models	for liver weight and Triglycerides
 source("C:/Github/AIL_B6xBFMI/QTLmapping_Overview/models.R")
@@ -105,4 +158,4 @@ getVarianceExplained <- function(genotypes, phenotypes, pheno.col = "d77", marke
   return(round(varExplained * 100, digits=1))
 }
 
-getVarianceExplained(genotypes, phenotypes, pheno.col = "Triglycerides/Proteins", marker = "S1H083826428") # 50 % of the variation explained by the QTL on chr 8!!
+getVarianceExplained(genotypes, phenotypes, pheno.col = "Triglycerides/Proteins", marker = "S1H083826428") # 20.5 % of the variance explained by the QTL on chr 8!!
