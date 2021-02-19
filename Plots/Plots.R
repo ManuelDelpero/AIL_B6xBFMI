@@ -9,7 +9,7 @@ setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
-lodmatrix <- read.csv("lodmatrix.adj.txt", header=TRUE, sep="\t", check.names=FALSE)
+lodmatrix <- read.csv("lodmatrix.txt", header=TRUE, sep="\t", check.names=FALSE)
 markerannot <- markerannot[,-1]
 markerannot <- markerannot[rownames(genotypes),]
 markerannot <- markerannot[sort(markerannot[,"Position"], index.return=TRUE)$ix,]
@@ -188,22 +188,22 @@ bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "TT"),])
 
 par(cex.lab=1.5, cex.main = 1.8, cex.axis = 1.4)
 par(mfrow = c(2,2))
-dataset <- lodannotmatrix[, c("Chromosome", "Position", "Triglycerides/Proteins")]
+dataset <- lodannotmatrix[, c("Chromosome", "Position", "Plasma_Triglycerides")]
 chr8 <- dataset[which(dataset[,"Chromosome"] == 8),]
 
 
 plot(main = "QTL profile liver triglycerides [Chr 8]", c(min(as.numeric(chr8[, "Position"])), max(as.numeric(chr8[, "Position"]))), c(0,7), ylab = "-log10[pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
-  points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Triglycerides/Proteins"] , type = "l", col="gray0", lwd = 1)
+  points(x = as.numeric(chr8[,"Position"]), y = chr8[,"Plasma_Triglycerides"] , type = "l", col="gray0", lwd = 1)
   abline(h=5.1, col="gray0")
   abline(h=4.4, col="gray88")
   axis(1, at = c(0,25000000, 50000000, 75000000, 100000000, 125000000, 150000000), c("0", "25", "50", "75", "100", "125", "150"))
 
-topmarkerID <- rownames(dataset[which.max(dataset[,"Triglycerides/Proteins"]),])
+topmarkerID <- rownames(dataset[which.max(dataset[,"Plasma_Triglycerides"]),])
 topmarker <- t(genotypes[topmarkerID,])
 groupsSize <- apply(genotypes,1,  table)[[topmarkerID]]
-genopheno <- cbind(topmarker, phenotypes[,"Triglycerides/Proteins"])
-colnames(genopheno) <- c("Genotype", "Triglycerides/Proteins")
-bpt <- boxplot(as.numeric(as.character(genopheno[which(genopheno[,1] == "GG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AG"),])), as.numeric(as.character(genopheno[which(genopheno[,1] == "AA"),])), main = "Liver triglycerides [SNP S1H083826428]", xlab = "Genotype", ylab = "[µg/µg]", col = c("gray88", "gray50", "gray20"), las =2, xaxt = "n")
+genopheno <- cbind(topmarker, phenotypes[,"Plasma_Triglycerides"])
+colnames(genopheno) <- c("Genotype", "Plasma_Triglycerides")
+bpt <- boxplot(as.numeric(genopheno[which(genopheno[,1] == "-1"),2]), as.numeric(genopheno[which(genopheno[,1] == "0"),2]), as.numeric(genopheno[which(genopheno[,1] == "1"),2]), main = "Liver triglycerides [SNP S1H083826428]", xlab = "Genotype", ylab = "[µg/µg]", col = c("gray88", "gray50", "gray20"), las =2, xaxt = "n")
   axis(1, at = 1:3 , c("AA", "AG", "GG"))
   legend("topleft", 
   legend = c("BFMI", "HET", "B6"), 
