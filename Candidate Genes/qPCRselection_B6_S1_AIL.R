@@ -32,11 +32,14 @@ B6_BFMI <- B6_BFMI[sort(as.numeric(B6_BFMI[, "TriGly"]), index.return=TRUE, decr
 B6_B6 <- B6like[which(B6like[, "topmarkerChr8"] != "AA"),]
 B6_B6 <- B6_B6[sort(as.numeric(B6_B6[, "TriGly"]), index.return=TRUE)$ix,]
 
+B6BFMI_BFMI <- rbind(B6_BFMI, BFMI_BFMI)
 # Do the t-test to compare the groups
 t.test(as.numeric(B6_B6[, "TriGly"]), as.numeric(BFMI_B6[, "TriGly"]))
-t.test(as.numeric(B6_BFMI[, "TriGly"]), as.numeric(BFMI_BFMI[, "TriGly"]))
+t.test(as.numeric(B6_B6[, "TriGly"]), as.numeric(B6BFMI_BFMI[, "TriGly"]))
+t.test(as.numeric(BFMI_B6[, "TriGly"]), as.numeric(B6_BFMI[, "TriGly"]))
+t.test(as.numeric(BFMI_B6[, "TriGly"]), as.numeric(B6BFMI_BFMI[, "TriGly"]))
 
-#Result, chromosome 3 matters if you're a B6 on chromosome 8
+# Result, chromosome 3 matters if you're a B6 on chromosome 8
 # if you're BFMI on chromosome 8 then your chromosome 3 status doesn't matters
 # As such we can define 3 groups: B6_B6, BFMI_B6, (B6_BFMI and BFMI_BFMI)
 # We select some animals from each of them !
@@ -44,9 +47,14 @@ t.test(as.numeric(B6_BFMI[, "TriGly"]), as.numeric(BFMI_BFMI[, "TriGly"]))
 BFMI_C8 <- rbind(B6_BFMI, BFMI_BFMI)
 BFMI_C8 <- BFMI_C8[sort(as.numeric(BFMI_C8[, "TriGly"]), index.return=TRUE, decreasing=TRUE)$ix,]
 
-#Define our groups (select 20 in total)
+# Define our groups (select 20 in total)
 G1 <- rownames(B6_B6[1:6,]) #6 from B6 B6
 G2 <- rownames(BFMI_B6[1:6,]) # 6 from BFMI B6
+G3 <- rownames(BFMI_C8[2:9,]) # 8 from BFMI_C8, from 2 since #1 is an outlier
+
+# Some more samples
+G1 <- rownames(B6_B6[1:8,]) #6 from B6 B6
+G2 <- rownames(BFMI_B6[1:8,]) # 6 from BFMI B6
 G3 <- rownames(BFMI_C8[2:9,]) # 8 from BFMI_C8, from 2 since #1 is an outlier
 
 days <- colnames(phenotypes)[7:24]
@@ -73,10 +81,11 @@ legend("topleft", c("B6 B6", "BFMI B6", "??? BFMI", "jObes1[b6]", "jObes1[BFMI]"
 #dev.off()
 
 #pdf("GroupsRTqPCR_before.pdf")
-par(cex.lab=1.2, cex.main = 1.2, cex.axis = 0.7)
-par(mfrow = c(1,2))
+par(cex.lab=1.2, cex.main = 1.8, cex.axis = 0.8)
+par(mfrow = c(2,2))
+#par(mfrow = c(1,2))
 x <- boxplot(main="Groups for gene expression analysis [before T-Test]", as.numeric(BFMI_BFMI[,3]), as.numeric(BFMI_B6[,3]) , as.numeric(B6_BFMI[,3][-1]), as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Liver triglycerides/protein [µg/µg]", col=c("gray20", "gray50", "gray70", "gray88") , las = 2, ylim = c(0, 450))
-  axis(1, at = 1:4 , c("BFMI Chr3/BFMI Chr 8 ", "BFMI Chr3/B6 Chr 8 ", "B6 Chr3/BFMI Chr 8 ", "B6 Chr3/B6 Chr 8"))
+  axis(1, at = 1:4 , c("BFMI Chr3/BFMI Chr8 ", "BFMI Chr3/B6 Chr8 ", "B6 Chr3/BFMI Chr8 ", "B6 Chr3/B6 Chr8"))
   y <- 430
   x <- 410
   z <- 370
@@ -102,15 +111,15 @@ x <- boxplot(main="Groups for gene expression analysis [before T-Test]", as.nume
 BFMIB6_BFMI <- c(as.numeric(BFMI_BFMI[,3]) , as.numeric(B6_BFMI[,3][-1]))
 
 #pdf("GroupsRTqPCR_after.pdf")
-boxplot(main="Groups for gene expression analysis [after T-Test]", BFMIB6_BFMI, as.numeric(BFMI_B6[,3]) , as.numeric(B6_B6[,3]), xlab = "Groups" , ylab = "Liver triglycerides/protein [µg/µg]",  col=c("gray20", "gray50", "gray88"), las = 2, ylim = c(0, 450))
-  axis(1, at = 1:3 , c("B6~BFMI Chr3/BFMI Chr 8", "BFMI Chr3/B6 Chr 8", "B6 Chr3/B6 Chr 8"))
+boxplot(main="Groups for gene expression analysis", as.numeric(B6_B6[,3]), BFMIB6_BFMI, as.numeric(BFMI_B6[,3]), xlab = "Groups" , ylab = "Liver triglycerides/protein [µg/µg]",  col=c("gray20", "gray50", "gray88"), las = 2, ylim = c(0, 500))
+  axis(1, at = 1:3 , c("B6 Chr3/B6 Chr8", "B6~BFMI Chr3/BFMI Chr8", "BFMI Chr3/B6 Chr8"))
   y <- 430
   x <- 410
   z <- 390
-  lines(c(1,2), c(y, y))
-  lines(c(1,3), c(x, x))
+  lines(c(1,2), c(y+60, y+60))
+  lines(c(1,3), c(x+30, x+30))
   lines(c(2,3), c(z, z))
-  text(1.5, y+5,"*")
-  text(2, x+5,"*")
-  text(2.5, z+5,"*")
+  text(1.5, y+75,"*")
+  text(2, x+45,"*")
+  text(2.5, z+15,"*")
 #dev.off()
