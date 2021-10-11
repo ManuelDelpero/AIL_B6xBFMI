@@ -9,7 +9,7 @@ setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
 genotypes <- read.csv("genomatrix.clean.txt", header = TRUE, check.names = FALSE, sep="\t", colClasses="character")
 phenotypes <- read.csv("allPhenotypes.txt", header = TRUE, check.names = FALSE, sep="\t", row.names=1)
 markerannot <- read.csv("SNP_Map.txt", header=TRUE, sep="\t", row.names=2, check.names=FALSE)
-lodmatrix <- read.csv("lodmatrix.adj.txt", header=TRUE, sep="\t", check.names=FALSE)
+lodmatrix <- read.csv("lodmatrix.adj_041021.txt", header=TRUE, sep="\t", check.names=FALSE)
 markerannot <- markerannot[,-1]
 markerannot <- markerannot[rownames(genotypes),]
 markerannot <- markerannot[sort(markerannot[,"Position"], index.return=TRUE)$ix,]
@@ -38,7 +38,7 @@ par(mfrow = c(1,2))
 #mat <- matrix(c(1,1,2,3), 2, 2, byrow = TRUE)
 #layout(mat, widths = rep.int(3, ncol(mat)))
 # lodcurve plots for each time point
-plot(main = "QTL profile body mass [Chr 3]", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10 [pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
+plot(main = "QTL profile body weight [Chr 3]", c(min(as.numeric(chr3[, "Position"])), max(as.numeric(chr3[, "Position"]))), c(0,9), ylab = "-log10 [pvalue]", xlab = "Position [mb]", las = 2, t = "n", xaxt = "n")
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d140"] , type = "l", col="gray0", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d63"] , type = "l", col="gray88", lwd = 1)
   points(x = as.numeric(chr3[,"Position"]), y = chr3[,"d105"] , type = "l", col="gray35", lwd = 1)
@@ -100,7 +100,7 @@ colnames(genopheno) <- c("Genotype", 28, 35, 42, 49, 55, 63, 70, 77, 84, 91, 98,
 timepoints <- as.numeric(as.character((colnames(genopheno[,-1]))))
 timepoints <- c(28, 42, 55, 70, 84, 98, 112, 126, 140)  
  
-plot(main="Body mass [SNP gUNC5036315]", c(25,140), c(0,55), ylab="[g]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
+plot(main="Body weight [SNP gUNC5036315]", c(25,140), c(0,55), ylab="[g]", xlab="Age [weeks]", yaxs = "i", las = 2, t = "n", xaxt="n")
   #rect(50, 0, 102, 69.89, border = NA, col = "lightskyblue1")
   #rect(102, 0, 145, 69.89, border = NA, col = "lightskyblue")
   axis(1, at = c(28, 42, 56, 70, 84, 98, 112, 126, 140), c("4", "6", "8", "10", "12", "14", "16", "18", "20"), lwd = 1, cex.axis=1.6)
@@ -262,6 +262,6 @@ bpt <- boxplot(as.numeric(genopheno[which(genopheno[,1] == "GG"),2]), as.numeric
   axis(1, at = 1:3 , c("GG", "TG", "TT"))
   legend("topleft",
   legend = c("BFMI", "HET", "B6"), 
-    col = c("gray20", "gray50"),
+    col = c("gray50", "gray20", "gray88"),
     pch = 15, pt.cex = 1.7, cex = 1, bty = "n"
 	)
