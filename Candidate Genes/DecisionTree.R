@@ -5,9 +5,10 @@
 
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA/SNPsRegions")
 
-FullList <- read.table("annotationSNPsCandidateGenes_all.txt", sep = "\t", check.names = FALSE, header=TRUE)
+FullList <- read.csv("annotationSNPsCandidateGenes_all.txt", sep = "\t", check.names = FALSE, header=TRUE)
 setwd("C:/Users/Manuel/Desktop/AIL_B6xBFMI/RAWDATA")
-Diffexprliver <- read.csv("liver_expressions_ann.txt", sep = "\t", header = TRUE, check.names = FALSE)
+Diffexprliver <- read.csv("FinalExpressionLiver.txt", sep = "\t", header = TRUE, check.names = FALSE)
+Diffexprliver <- Diffexprliver[which(Diffexprliver[,"p.value"] < 0.018),]
 GenesInfo <- read.csv("genesInfo.txt", sep = "\t", header = TRUE, check.names = FALSE)
 #DiffexprSkeletalmuscle <- read.csv("DiffExprMuscle.txt", sep = "\t", header = TRUE, check.names = FALSE)
 #DiffexprPankreas <- read.csv("DiffExprPankreas.txt", sep = "\t", header = TRUE, check.names = FALSE)
@@ -44,12 +45,12 @@ AlaninePathways <- path[grep("Alanine", path)]
 AminoAcidPathways <- path[grep("Amino", path)]
 mTORpathway <- path[grep("mTOR", path)]
 
-pathways <- c(fattyAcidsPathways1, fattyAcidsPathways2, CholersterolPathways, LipidPathways, SteroidPathways, CarboPathways1, CarboPathways2, InsulinPathways, CortisolPathways,ArgininPathways, AlaninePathways, AminoAcidPathways)
-pathway_ALLGENE<-GetPathData(pathways)
-pathway_ALLGENE<-ConvertedIDgenes(pathways)
-pathway_ALLGENE <- unique(unlist(pathway_ALLGENE, recursive = TRUE, use.names = FALSE))
+#pathways <- c(fattyAcidsPathways1, fattyAcidsPathways2, CholersterolPathways, LipidPathways, SteroidPathways, CarboPathways1, CarboPathways2, InsulinPathways, CortisolPathways,ArgininPathways, AlaninePathways, AminoAcidPathways)
+#pathway_ALLGENE<-GetPathData(pathways)
+#pathway_ALLGENE<-ConvertedIDgenes(pathways)
+#pathway_ALLGENE <- unique(unlist(pathway_ALLGENE, recursive = TRUE, use.names = FALSE))
 
-# Score genes based on mutations (Decision tree)
+# Score genes based on seq data, expression and annotation (Decision tree)
 RankCandidates <- matrix(NA, nrow = length(Candidates), ncol = 10, dimnames = list(Candidates,c("SIFT_del", "SIFT_tol", "UTRs", "Promoter", "CTCF B-site", "Enhancer", "DOMAIN", "Expression", "Annotation", "SCORE")))
 for (gene in Candidates) {
   Score <- 0
@@ -102,7 +103,7 @@ RankCandidates <- data.frame(RankCandidates[order(as.numeric(RankCandidates[,"SC
 
 
 library(biomaRt)
-bio.mart <- useMart("ensembl", dataset="mmusculus_gene_ensembl")
+bio.mart <- useMart("ensembl", dataset="mmusculus_gene_ensembl", host="http://nov2020.archive.ensembl.org")
 biomart.RankCandidates <- getBM(attributes = c("ensembl_gene_id", "chromosome_name", "mgi_symbol"), 
                           filters = c("external_gene_name"), values = rownames(RankCandidates), mart = bio.mart)
 rownames(biomart.RankCandidates) <- biomart.RankCandidates[,3]
@@ -120,4 +121,4 @@ for(chr in chromosomes){
 }
 
 
-write.table(RankCandidates, file = "CandidatesScores14012020.txt", sep = "\t", quote = FALSE, row.names = FALSE)
+write.table(RankCandidates, file = "CandidatesScores22062021.txt", sep = "\t", quote = FALSE, row.names = FALSE)
